@@ -1,0 +1,20 @@
+.new-item-drop-image {
+	border-style: dashed!important;
+}
+
+.file-button {
+	position: relative;
+
+}
+
+.file-button input[type=file] {
+	position: absolute;
+	display: inline-block;
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
+	z-index: 10;
+	opacity: 0;
+	cursor: pointer;
+}

@@ -5,9 +5,7 @@
   "main": "js/index.js",
   "scripts": {
     "test": "jest",
-    "build:styles": "rm -rf css && lessc less/styles.less css/styles.css",
-    "build:scripts": "rm -rf js && webpack",
-    "build": "npm run build:styles && npm run build:scripts"
+    "build": "rm -rf js && rm -rf css && webpack"
   },
   "repository": {
     "type": "git",
@@ -21,9 +19,11 @@
   "homepage": "https://github.com/dggluz/seniority-test#readme",
   "devDependencies": {
     "@types/jquery": "^3.3.9",
+    "css-loader": "^1.0.0",
     "file-loader": "^2.0.0",
     "html-loader": "^0.5.5",
-    "less": "^3.8.1",
+    "less-loader": "^4.1.0",
+    "style-loader": "^0.23.0",
     "ts-loader": "^5.1.1",
     "typescript": "^3.0.3",
     "webpack": "^4.19.1",

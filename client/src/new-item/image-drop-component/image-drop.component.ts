@@ -1,13 +1,14 @@
 declare var require: {
-	<T>(path: string): T;
+	<T = string>(path: string): T;
 	(paths: string[], callback: (...modules: any[]) => void): void;
 	ensure: (
 		paths: string[],
-		callback: (require: <T>(path: string) => T) => void
+		callback: (require: <T = string>(path: string) => T) => void
 	) => void;
 };
 
-const html = require<string>('./image-drop.component.html');
+require('./image-drop.component.css');
+const html = require('./image-drop.component.html');
 
 export class ImageDropComponent {
 	private $component: JQuery<HTMLElement>;

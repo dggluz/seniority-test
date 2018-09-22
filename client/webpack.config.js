@@ -9,10 +9,20 @@ module.exports = {
 				test: /\.tsx?$/,
 				use: 'ts-loader',
 				exclude: /node_modules/
-			},
-			{
+			}, {
 				test: /\.html$/,
 				use: 'html-loader'
+			}, {
+
+				test: /\.css$/,
+				use: [{
+						loader: 'style-loader'
+					}, {
+						loader: 'css-loader'
+					// }, {
+					// 	loader: 'less-loader'
+					}
+				]
 			}
 		]
 	},
