@@ -4,7 +4,9 @@
   "description": "Seniority test server",
   "main": "dist/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "rm -rf dist && tsc",
+    "start": "node dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -25,7 +27,7 @@
   },
   "dependencies": {
     "@ts-task/task": "^1.0.0",
-    "@ts-task/utils": "0.0.0",
+    "@ts-task/utils": "0.0.1",
     "mongodb": "^3.1.6",
     "parmenides": "0.0.2",
     "restify": "^7.2.1"
