@@ -1,0 +1,9 @@
+version: '3.7'
+services:
+  web-server:
+    build: .
+    # This should be a config, but docker-compose ignores config options
+    volumes:
+      - ./server-configs.json:/configs.json
+    ports:
+     - "8080:8080"
