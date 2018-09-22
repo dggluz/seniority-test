@@ -1,0 +1,23 @@
+{
+  "name": "seniority-test-client",
+  "version": "0.0.0",
+  "description": "Seniority test client",
+  "main": "js/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/dggluz/seniority-test.git"
+  },
+  "author": "dggluz@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dggluz/seniority-test/issues"
+  },
+  "homepage": "https://github.com/dggluz/seniority-test#readme",
+  "devDependencies": {
+    "typescript": "^3.0.3"
+  },
+  "dependencies": {}
+}
