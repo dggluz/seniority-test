@@ -1,26 +1,34 @@
 import { Task, UnknownError } from '@ts-task/task';
-import { isInstanceOf } from '@ts-task/utils';
+import { ParmenidesError } from 'parmenides';
 
 /**
  * Takes a function that returns a sync result or throws an error and calls it from a
- * Task, handling the error if it is a TypeError, with the errHandler function
- * @param validation function that takes a parameter and returns a sync value or throws TypeError
- * @param errHandler function that takes a TypeError and returns another Error
+ * Task, handling the error if it is a ParmenidesError, with the errHandler function
+ * @param validation function that takes a parameter and returns a sync value or throws ParmenidesError
+ * @param errHandler function that takes a ParmenidesError and returns another Error
  * @returns Task to the validation result, possible rejected with the results of the errHandler
  */
-export const taskValidation = <A, B, E> (validation: (x: A) => B, errHandler: (err: TypeError) => E) =>
+export const taskValidation = <A, B, E> (validation: (x: A) => B, errHandler: (err: ParmenidesError) => E) =>
 	(x: A): Task<B, E | UnknownError> => {
 		try {
 			return Task.resolve(validation(x));
 		}
 		catch(err) {
 			return Task
-				.reject(isInstanceOf(TypeError)(err) ?
+				.reject(isParmenidesError(err) ?
 					errHandler(err) :
 					new UnknownError(err)
 				)
 		}
 };
+
+/**
+ * Predicate to find out if an error is a ParmenidesError
+ * @param err The error
+ */
+const isParmenidesError = (err: any): err is ParmenidesError =>
+	err && err.ParmenidesError === 'ParmenidesError'
+;
 
 /**
  * Does nothing

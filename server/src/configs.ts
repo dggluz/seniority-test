@@ -4,7 +4,7 @@ import { strictObjOf, num } from 'parmenides';
 
 /**
  * Contract (see parmenides) to validate against the
- * expected form of the configs.json file (throw TypeError if doesn't
+ * expected form of the configs.json file (throw ParmenidesError if doesn't
  * validate and types the result if it does)
  * @param target object to validate
  * @returns validated target
