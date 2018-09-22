@@ -7,7 +7,7 @@ declare var require: {
 	) => void;
 };
 
-require('./image-drop.component.css');
+require('./image-drop.component.less');
 const html = require('./image-drop.component.html');
 
 export class ImageDropComponent {
