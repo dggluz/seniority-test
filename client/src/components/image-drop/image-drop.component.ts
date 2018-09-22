@@ -1,23 +1,19 @@
-declare var require: {
-	<T = string>(path: string): T;
-	(paths: string[], callback: (...modules: any[]) => void): void;
-	ensure: (
-		paths: string[],
-		callback: (require: <T = string>(path: string) => T) => void
-	) => void;
-};
+import { FileButtonComponent } from '../file-button/file-button.component';
+import { Component } from '../component';
+
+declare var require: <T = string>(path: string) => T;
 
 require('./image-drop.component.less');
-const html = require('./image-drop.component.html');
 
-export class ImageDropComponent {
-	private $component: JQuery<HTMLElement>;
-
+export class ImageDropComponent extends Component {
 	constructor () {
-		this.$component = $(html);
-		const $dropArea = this.$component.find('.new-item-drop-image');
+		super(require('./image-drop.component.html'));
+	}
+
+	protected _setHandlers () {
+		const $dropArea = this.$dom.find('.new-item-drop-image');
 		resetFileDropArea($dropArea);
-		this.$component
+		this.$dom
 			.on('drag dragstart dragend dragover dragenter dragleave drop', e => {
 				e.preventDefault();
 				e.stopPropagation();
@@ -29,10 +25,9 @@ export class ImageDropComponent {
 				console.log('file dropped!');
 			})
 		;
-	}
 
-	public appendTo ($wrapper: JQuery<HTMLElement>) {
-		this.$component.appendTo($wrapper);
+		new FileButtonComponent().appendTo(this.$dom.find('.file-button-wrapper'));
+
 		return this;
 	}
 }

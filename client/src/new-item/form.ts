@@ -1,8 +1,8 @@
-import { ImageDropComponent } from './image-drop-component/image-drop.component';
+import { ImageDropComponent } from '../components/image-drop/image-drop.component';
 
 export const init = () => {
 	new ImageDropComponent()
-		.appendTo($('#drop-wrapper'));
+		.appendTo('#drop-wrapper');
 
 	$('#new-item').submit(e => {
 		e.preventDefault();
