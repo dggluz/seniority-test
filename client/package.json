@@ -4,7 +4,8 @@
   "description": "Seniority test client",
   "main": "js/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build:styles": "lessc less/styles.less css/styles.css"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,7 @@
   },
   "homepage": "https://github.com/dggluz/seniority-test#readme",
   "devDependencies": {
+    "less": "^3.8.1",
     "typescript": "^3.0.3"
   },
   "dependencies": {}
