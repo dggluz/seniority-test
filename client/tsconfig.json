@@ -4,8 +4,8 @@
 		"outDir": "js",
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"target": "esnext",
-		"module": "commonjs"
+		"target": "es5",
+		"module": "es6"
 	},
 	"include": [
 		"src"

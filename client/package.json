@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "build:styles": "rm -rf css && lessc less/styles.less css/styles.css",
-    "build:scripts": "rm -rf js && tsc",
+    "build:scripts": "rm -rf js && webpack",
     "build": "npm run build:styles && npm run build:scripts"
   },
   "repository": {
@@ -22,7 +22,10 @@
   "devDependencies": {
     "@types/jquery": "^3.3.9",
     "less": "^3.8.1",
-    "typescript": "^3.0.3"
+    "ts-loader": "^5.1.1",
+    "typescript": "^3.0.3",
+    "webpack": "^4.19.1",
+    "webpack-cli": "^3.1.0"
   },
   "dependencies": {}
 }
