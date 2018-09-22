@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"strict": true,
-		"outDir": "dist",
+		"outDir": "js",
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"target": "esnext",
@@ -12,6 +12,6 @@
 	],
 	"exclude": [
 		"node_modules",
-		"dist"
+		"js"
 	]
 }
