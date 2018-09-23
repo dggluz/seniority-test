@@ -1,7 +1,7 @@
-import { ImageDropComponent } from '../components/image-drop/image-drop.component';
+import { ImageFileLoaderComponent } from '../components/image-file-loader/image-file-loader.component';
 
 export const init = () => {
-	new ImageDropComponent()
+	new ImageFileLoaderComponent()
 		.appendTo('#drop-wrapper');
 
 	$('#new-item').submit(e => {

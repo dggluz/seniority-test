@@ -4,6 +4,8 @@ declare var require: <T = string>(path: string) => T;
 
 require('./file-drop-area.component.less');
 
+// TODO: support specific mime types
+// TODO: different styles for invalid drags
 export class FileDropAreaComponent extends Component {
 	constructor () {
 		super(require('./file-drop-area.component.html'));
@@ -20,6 +22,14 @@ export class FileDropAreaComponent extends Component {
 			.on('dragleave dragend drop', _ => resetFileDropArea(this.$dom))
 			.on('drop', e => {
 				console.log(e);
+
+				// TODO: validate that what was dropped is a file
+				// TODO: validate there's only one file
+				// TODO: validate file permissions
+				// TODO: validate file type
+				// TODO: extra validations (like image size)
+				// TODO: trigger event handlers
+
 				console.log('file dropped!');
 			})
 		;
