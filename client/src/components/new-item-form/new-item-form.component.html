@@ -2,6 +2,17 @@
 	<form class="card-body">
 		<h2 class="card-title">New item</h2>
 		<div class="image-file-selector-wrapper"></div>
+		<div class="row">
+			<div class="column">
+				<!-- TODO: extract input field into another component -->
+				<div class="form-group">
+					<!-- TODO: generic case for "for" and "described by" (generating unique ids) -->
+					<label for="exampleInputEmail1">Description</label>
+					<input type="text" required maxlength="300" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Description...">
+					<small id="emailHelp" class="form-text text-muted">The description for your item</small>
+				</div>
+			</div>
+		</div>
 		<div class="row mt-3">
 			<div class="col">
 				<button type="submit" class="btn btn-success">Create item</button>
