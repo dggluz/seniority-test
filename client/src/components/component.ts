@@ -1,4 +1,5 @@
-export abstract class Component {
+// TODO: ensure it's abstract (but, without "abstract" keyword to allow mixins)
+export class Component {
 	protected $dom: JQuery<HTMLElement>;
 
 	/**
