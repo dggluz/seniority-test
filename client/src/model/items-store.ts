@@ -2,7 +2,9 @@ import { Item } from './item';
 import { Observable } from '../utils/observable.mixin';
 import { EmptySuperClass } from '../utils/empty-super-class';
 
-export class ItemsStore extends Observable(EmptySuperClass) {
+export class ItemsStore extends Observable<{
+	'new-item': Item;
+}>().from(EmptySuperClass) {
 	_items: Item[] = [];
 
 	addItem (item: Item) {

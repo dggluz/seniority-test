@@ -1,9 +1,9 @@
-import { ClassType } from "./class-type";
+import { ClassType } from './class-type';
 
-class Observer <T> {
-	constructor (private _eventName: string, private _callback: (x: T) => void) {}
+class Observer {
+	constructor (private _eventName: string, private _callback: Callback<any>) {}
 
-	notify (event: string, value: T) {
+	notify (event: string, value: any) {
 		if (this._eventName === event) {
 			this._callback(value);
 		}
@@ -11,25 +11,31 @@ class Observer <T> {
 	}
 }
 
-// TODO: type observers types from a generic map to functions
+export type MapOfCallbacks<T> = {
+	[P in keyof T]: T[P];
+};
 
-export const Observable = <T extends ClassType<any>> (Base: T) =>
-	class extends Base {
-		private _observers: Observer<any>[] = [];
+export type Callback <T> = (x: T) => void;
 
-		// TODO: type better the constructor to match actual Base constructor (if possible)
-		constructor (...args: any[]) {
-			super(...args);
+export const Observable = <MC extends MapOfCallbacks<O>, O = any> () => ({
+	from: <T extends ClassType<any>> (Base: T) =>
+		class _Observable extends Base {
+			private _observers: Observer[] = [];
+
+			// TODO: type better the constructor to match actual Base constructor (if possible)
+			constructor (...args: any[]) {
+				super(...args);
+			}
+
+			subscribe <EN extends keyof MC> (eventName: EN, callback: Callback<MC[EN]>) {
+				this._observers.push(new Observer(eventName as string, callback));
+				return this;
+			}
+
+			protected _notifyObservers <EN extends keyof MC> (eventName: EN, value?: MC[EN]) {
+				this._observers.forEach(anObserver => anObserver.notify(eventName as string, value));
+				return this;
+			}
 		}
+});
 
-		subscribe <T> (eventName: string, callback: (x: T) => void) {
-			this._observers.push(new Observer(eventName, callback));
-			return this;
-		}
-
-		protected _notifyObservers <T = any> (event: string, value: T = undefined as any) {
-			this._observers.forEach(anObserver => anObserver.notify(event, value));
-			return this;
-		}
-	}
-;

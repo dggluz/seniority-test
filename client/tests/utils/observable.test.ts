@@ -2,8 +2,14 @@ import { Observable } from '../../src/utils/observable.mixin';
 import { EmptySuperClass } from '../../src/utils/empty-super-class';
 
 describe('Observable', () => {
+
 	describe('class extends Observable mixin without base class', () => {
-		class Foo extends Observable(EmptySuperClass) {
+		type FooObservable = {
+			foo: string,
+			baz: number
+		};
+
+		class Foo extends Observable<FooObservable>().from(EmptySuperClass) {
 			foo (value: string) {
 				this._notifyObservers('foo', `foo: ${value}`);
 				return value;
@@ -41,7 +47,10 @@ describe('Observable', () => {
 			}
 		}
 
-		class Foo extends Observable(Bar) {
+		class Foo extends Observable<{
+			foo: string;
+			baz: string;
+		}>().from(Bar) {
 			foo (value: string) {
 				this._notifyObservers('foo', `foo: ${value}`);
 				return value;

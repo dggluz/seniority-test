@@ -1,7 +1,7 @@
 import { Observable } from '../utils/observable.mixin';
 import { EmptySuperClass } from '../utils/empty-super-class';
 
-export class Item extends Observable(EmptySuperClass) {
+export class Item extends Observable().from(EmptySuperClass) {
 	private _image: File;
 	constructor (image: File | null) {
 		super();
