@@ -1,7 +1,7 @@
 import { Component } from '../component';
 import { FileButtonComponent } from '../file-button/file-button.component';
 import { FileDropAreaComponent } from '../file-drop-area/file-drop-area.component';
-import { FileCallback } from '../file-selector/file-selector.mixin';
+import { FileCallback } from '../../utils/file-selector.mixin';
 
 export class FileLoaderComponent extends Component {
 	private _fileButton: FileButtonComponent;
