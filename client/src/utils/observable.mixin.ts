@@ -1,6 +1,4 @@
-interface ClassType <T> {
-	new (...args: any[]): T;
-};
+import { ClassType } from "./class-type";
 
 class Observer <T> {
 	constructor (private _eventName: string, private _callback: (x: T) => void) {}
