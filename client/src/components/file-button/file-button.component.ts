@@ -1,7 +1,5 @@
 import { Component } from '../component';
 
-declare var require: <T = string>(path: string) => T;
-
 require('./file-button.component.less');
 
 export type FileCallback = (file: File) => void;

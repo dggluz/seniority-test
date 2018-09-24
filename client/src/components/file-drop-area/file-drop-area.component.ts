@@ -1,7 +1,5 @@
 import { Component } from '../component';
 
-declare var require: <T = string>(path: string) => T;
-
 require('./file-drop-area.component.less');
 
 // TODO: support specific mime types

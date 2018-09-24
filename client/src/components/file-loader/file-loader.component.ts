@@ -2,8 +2,6 @@ import { Component } from '../component';
 import { FileButtonComponent, FileCallback } from '../file-button/file-button.component';
 import { FileDropAreaComponent } from '../file-drop-area/file-drop-area.component';
 
-declare var require: <T = string>(path: string) => T;
-
 export class FileLoaderComponent extends Component {
 	private _fileButton: FileButtonComponent;
 	private _fileDropArea: FileDropAreaComponent;

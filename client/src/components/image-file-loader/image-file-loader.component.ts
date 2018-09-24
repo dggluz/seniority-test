@@ -1,8 +1,6 @@
 import { Component } from '../component';
 import { FileLoaderComponent } from '../file-loader/file-loader.component';
 
-declare var require: <T = string>(path: string) => T;
-
 require('./image-file-loader.component.less');
 
 export class ImageFileLoaderComponent extends Component {
