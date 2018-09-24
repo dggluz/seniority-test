@@ -1,3 +1,4 @@
-import { init as initNewItemForm } from './new-item/form';
+import { NewItemFormComponent } from './components/new-item-form/new-item-form.component';
 
-initNewItemForm();
+new NewItemFormComponent()
+	.appendTo('.new-item-form-wrapper');

@@ -17,6 +17,7 @@ export const Observable = <T extends Constructor<{}>> (Base: T = Object as any) 
 	class extends Base {
 		private _observers: Observer<any>[] = [];
 
+		// TODO: type better the constructor to match actual Base constructor (if possible)
 		constructor (...args: any[]) {
 			super(...args);
 		}
