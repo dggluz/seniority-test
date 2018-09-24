@@ -1,4 +1,6 @@
-type Constructor<T> = new (...args: any[]) => T;
+interface ClassType <T> {
+	new (...args: any[]): T;
+};
 
 class Observer <T> {
 	constructor (private _eventName: string, private _callback: (x: T) => void) {}
@@ -13,7 +15,7 @@ class Observer <T> {
 
 // TODO: type observers types from a generic map to functions
 
-export const Observable = <T extends Constructor<{}>> (Base: T = Object as any) =>
+export const Observable = <T extends ClassType<any>> (Base: T) =>
 	class extends Base {
 		private _observers: Observer<any>[] = [];
 
