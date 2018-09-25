@@ -1,35 +1,40 @@
 import { Observable } from '../../../src/utils/observable.mixin';
 import { EmptySuperClass } from '../../../src/utils/empty-super-class';
 
-interface FooObservable {
+// GIVEN: an Observable class that extends from EmptySuperClass
+class Foo extends Observable<{
 	foo: string;
 	baz: number;
-}
-
-class Foo extends Observable<FooObservable>().from(EmptySuperClass) {
+}>().from(EmptySuperClass) {
 	foo(value: string) {
 		this._notifyObservers('foo', `foo: ${value}`);
 		return value;
 	}
 }
 
+// THEN:
 const foo = new Foo();
+// ...we can call class methods
 foo.foo('hello!'); // $ExpectType string
 
+// ...we can subscribe to events (which are typed themselves)
 foo.subscribe('foo', x => {
 	x; // $ExpectType string
 });
 
+// ...we can subscribe to another event (with other typings)
 foo.subscribe('baz', x => {
 	x; // $ExpectType number
 });
 
+// GIVEN: a superclass
 class Bar {
 	bar(value: number) {
 		return value * 2;
 	}
 }
 
+// ...and an Observable class that inherits from the superclass
 class Foo2 extends Observable<{
 	foo: string;
 	baz: string;
@@ -40,5 +45,7 @@ class Foo2 extends Observable<{
 	}
 }
 
+// THEN:
 const foo2 = new Foo2();
+// ... we can call superclass methods
 foo2.bar(4); // $ExpectType number
