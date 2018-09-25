@@ -4,13 +4,23 @@ import { EmptySuperClass } from '../utils/empty-super-class';
 
 export class ItemsStore extends Observable<{
 	'new-item': Item;
+	'items-qty': number;
 }>().from(EmptySuperClass) {
 	_items: Item[] = [];
 
 	addItem (item: Item) {
 		this._items.push(item);
 		this._notifyObservers('new-item', item);
+		this._notifyObservers('items-qty', this.getItemsQty());
 		return this;
+	}
+
+	getItems() {
+		return this._items;
+	}
+
+	getItemsQty () {
+		return this.getItems().length;
 	}
 }
 

@@ -23,8 +23,6 @@ export class NewItemFormComponent extends Component {
 				$description.val() as string,
 				this._imageFileSelector.getImageFile()
 			));
-
-			console.log('new item');
 		});
 
 		return this;
