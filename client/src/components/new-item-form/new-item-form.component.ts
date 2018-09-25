@@ -17,7 +17,12 @@ export class NewItemFormComponent extends Component {
 		this.$dom.children('form').submit(e => {
 			e.preventDefault();
 
-			itemsStore.addItem(new Item(this._imageFileSelector.getImageFile()));
+			// TODO: change this
+			const $description = this.$dom.find('#exampleInputEmail1');
+			itemsStore.addItem(new Item(
+				$description.val() as string,
+				this._imageFileSelector.getImageFile()
+			));
 
 			console.log('new item');
 		});
