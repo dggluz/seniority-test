@@ -1,6 +1,6 @@
 import { Component } from '../component';
-import { itemsStore } from '../../model/model';
 import { ItemComponent } from '../item/item.component';
+import { itemsStore } from '../../model/model';
 
 export class ItemsWrapperComponent extends Component {
 	constructor () {

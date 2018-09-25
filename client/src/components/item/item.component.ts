@@ -1,6 +1,8 @@
 import { Component } from '../component';
 import { Item } from '../../model/item';
 
+require('./item.component.less');
+
 export class ItemComponent extends Component {
 	private _model: Item;
 
@@ -10,11 +12,23 @@ export class ItemComponent extends Component {
 		this._model = model
 			.subscribe('description', description => {
 				this._updateDescription(description);
-			});
+			})
+			.subscribe('delete', _ => {
+				this._destroy();
+			})
+		;
 
 		this
 			._updateDescription(this.getModel().getDescription())
 		;
+	}
+
+	protected _setHandlers () {
+		this.$dom.find('.delete').click(e => {
+			e.preventDefault();
+			this.getModel().delete();
+		});
+		return this;
 	}
 
 	private getModel () {
@@ -23,6 +37,11 @@ export class ItemComponent extends Component {
 
 	private _updateDescription(description: string) {
 		this.$dom.find('.description').text(description);
+		return this;
+	}
+
+	private _destroy () {
+		this.$dom.remove();
 		return this;
 	}
 }

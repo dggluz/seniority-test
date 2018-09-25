@@ -3,6 +3,7 @@ import { EmptySuperClass } from '../utils/empty-super-class';
 
 export class Item extends Observable<{
 	description: string;
+	delete: Item;
 }>().from(EmptySuperClass) {
 	private _image: File;
 	private _description: string = '';
@@ -39,5 +40,11 @@ export class Item extends Observable<{
 
 	getImage () {
 		return this._image;
+	}
+
+	delete() {
+		// TODO:
+		this._notifyObservers('delete', this);
+		return this;
 	}
 }
