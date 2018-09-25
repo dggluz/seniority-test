@@ -1,5 +1,6 @@
 import { Observable } from '../utils/observable.mixin';
 import { EmptySuperClass } from '../utils/empty-super-class';
+import { itemsStore } from './model';
 
 export class Item extends Observable<{
 	description: string;
@@ -43,7 +44,7 @@ export class Item extends Observable<{
 	}
 
 	delete() {
-		// TODO:
+		itemsStore.removeItem(this);
 		this._notifyObservers('delete', this);
 		return this;
 	}
