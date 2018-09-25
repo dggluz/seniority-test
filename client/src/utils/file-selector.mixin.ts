@@ -6,11 +6,6 @@ export const FileSelector = <T extends ClassType<any>> (Base: T) =>
 	class extends Base {
 		protected _fileCallbacks: FileCallback[] = [];
 		protected _file: File | null = null;
-	
-		// TODO: type better the constructor to match actual Base constructor (if possible)
-		constructor (...args: any[]) {
-			super(...args);
-		}
 
 		// TODO: improve typings
 		onNewFile (callback: FileCallback) {
