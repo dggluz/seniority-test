@@ -5,7 +5,7 @@ import { xhrTask } from '../utils/xhr-task';
 export const saveNewItem = (item: Item) => {
 	const formData = new FormData();
 	formData.append('description', item.getDescription());
-	// formData.append('image', item.getImageFile());
+	formData.append('image', item.getImageFile());
 
 	return xhrTask({
 		url: `${apiDomain}/item`,
@@ -18,8 +18,8 @@ export const saveNewItem = (item: Item) => {
 	// TODO: extract into function to reuse between all requests savings
 	.fork(
 		// TODO: handle better errors
-		err => console.error(err),
+		console.error,
 		// TODO: handle better success
-		res => console.log(res)
+		console.log
 	);
 };
