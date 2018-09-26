@@ -24,6 +24,7 @@
     "@types/mongodb": "^3.1.9",
     "@types/restify": "^7.2.4",
     "jest": "^23.6.0",
+    "type-zoo": "^3.1.1",
     "typescript": "^3.0.3"
   },
   "dependencies": {
