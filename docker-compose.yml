@@ -1,9 +1,21 @@
 version: '3.7'
 services:
+  ## Our web server
   web-server:
+    container_name: "web-server"
     build: .
     # This should be a config, but docker-compose ignores config options
     volumes:
       - ./server-configs.json:/configs.json
     ports:
      - "8080:8080"
+    depends_on:
+      - mongodb
+
+  ## DB container
+  mongodb:
+    image: mongo:latest
+    container_name: "mongodb"
+    ports:
+      - 27017:27017
+    command: mongod
