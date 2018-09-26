@@ -8,98 +8,60 @@ import { asUnknownError } from '@ts-task/task/dist/lib/src/operators';
 import { FsError, SyntaxJSONError, InvalidJSONError } from '../fs-utils';
 import { BadRequestError } from '../http-errors';
 import { saveImageAsStatic, FileExtensionError } from '../utils/save-image-as-static';
-import { insertOneDocument, MongoDocument, isMongoError } from '../mongo-utils';
-import { rejectIf } from '../utils/reject-if';
-import * as sizeOf from 'image-size';
+import { isMongoError } from '../db/mongo-utils';
 import { tapChain } from '../utils/tap-chain';
-
-class ImageSizeError extends Error {
-	ImageSizeError = 'ImageSizeError';
-
-	constructor (public originalError: Error) {
-		super(originalError.message);
-	}
-}
-
-const getImageSize = (imagePath: string) =>
-	new Task<{
-		height: number;
-		width: number;
-	}, ImageSizeError>((resolve, reject) => {
-		sizeOf(imagePath, (err, dimensions) => {
-			if (err) {
-				reject(new ImageSizeError(err));
-			}
-			else {
-				resolve(dimensions);
-			}
-		});
-	})
-;
-
-class InvalidImageDimensions extends Error {
-	InvalidImageDimensions = 'InvalidImageDimensions';
-
-	constructor (expectedHeight: number, expectedWith: number) {
-		super(`Wrong image dimensions. Expected image to be ${expectedWith}x${expectedHeight}`);
-	}
-}
-
-interface MongoItem extends MongoDocument {
-	description: string;
-	image: string;
-}
-
-const saveItem = insertOneDocument<MongoItem>('items');
-
-const validateImageSize = (imagePath: string) => {
-	const expectedHeight = 320;
-	const expectedWidth = 320;
-
-	return getImageSize(imagePath)
-		.chain(rejectIf(
-			dimensions =>
-				dimensions.height !== expectedHeight || dimensions.width !== expectedWidth,
-			new InvalidImageDimensions(expectedHeight, expectedWidth)
-		));
-};
+import { validateDescription } from '../validations/validate-description';
+import { validateImageSize, InvalidImageDimensions } from '../validations/validate-image-size';
+import { ImageSizeError } from '../utils/get-image-size';
+import { saveNewItem } from '../db/save-new-item';
 
 /**
- * Endpoint that just response with a dummy object. Useful for checking if the server is alive.
+ * Endpoint that saves items to DB.
  */
 export const saveNewItemCtrl = createEndpoint(req =>
 	Task
 		.resolve(req)
+
+		// Check that we have a description
 		.chain(checkBody(strictObjOf({
 			description: str
 		})))
+
+		// Check that we have an image file
 		.chain(checkFiles(['image']))
 
 		// validate description
-		.chain(rejectIf(
-			req => !/.{1,300}/.test(req.body.description),
-			new BadRequestError(new Error('Description should be non-empty and shorter than 300 characters'))
-		))
+		.chain(tapChain(req => validateDescription(req.body.description)))
 
 		// validate image (size)
 		.chain(tapChain(req => validateImageSize(req.files.image.path)))
 
+		// Save item
 		.chain(req =>
-			// Save item to DB
+			// Save item's image
 			saveImageAsStatic(req.files.image)
-				.chain(imageName => saveItem({
+				// Save item to DB
+				.chain(imageName => saveNewItem({
 					description: req.body.description,
 					image: imageName
 				}))
 		)
+
+		// Send response to client
 		.map(item => ({
-			ok: true,
+			status: 'ok',
 			item: item
 		}))
+
+		// Handle errors:
+		// Errors related to image handling will be considered BadRequestError
 		.catch(caseError(
-			isInstanceOf(FileExtensionError, InvalidImageDimensions, ImageSizeError),
+			isInstanceOf(
+				FileExtensionError,InvalidImageDimensions, ImageSizeError),
 			err => Task.reject(new BadRequestError(err))
 		))
+
+		// Errors from reading files (configs and secrets) will be InternalServerError
 		.catch(
 			caseError(
 				isInstanceOf(
@@ -110,6 +72,8 @@ export const saveNewItemCtrl = createEndpoint(req =>
 				err => asUnknownError(err)
 			)
 		)
+
+		// All DB errors will be InternalServerError
 		.catch(
 			caseError(
 				isMongoError,

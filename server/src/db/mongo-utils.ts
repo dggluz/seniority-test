@@ -2,7 +2,7 @@ import { Task } from '@ts-task/task';
 import { share, isInstanceOf } from '@ts-task/utils';
 import { MongoClient, MongoError as _MongoError, Collection, ObjectId } from 'mongodb';
 import { Omit } from 'type-zoo/types';
-import { dbSecrets } from './secrets';
+import { dbSecrets } from '../secrets';
 
 export class MongoError extends Error {
 	MongoError = 'MongoError';
