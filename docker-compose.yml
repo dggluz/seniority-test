@@ -9,6 +9,8 @@ services:
       - ./server-configs.json:/configs.json
     ports:
      - "8080:8080"
+    secrets:
+      - db
     depends_on:
       - mongodb
 
@@ -19,3 +21,8 @@ services:
     ports:
       - 27017:27017
     command: mongod
+
+# Secrets:
+secrets:
+  db:
+    file: ./db-secret.json

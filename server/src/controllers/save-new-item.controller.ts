@@ -8,6 +8,14 @@ import { asUnknownError } from '@ts-task/task/dist/lib/src/operators';
 import { FsError, SyntaxJSONError, InvalidJSONError } from '../fs-utils';
 import { BadRequestError } from '../http-errors';
 import { saveImageAsStatic, FileExtensionError } from '../utils/save-image-as-static';
+import { insertOneDocument, MongoDocument, isMongoError } from '../mongo-utils';
+
+interface MongoItem extends MongoDocument {
+	description: string;
+	image: string;
+}
+
+const saveItem = insertOneDocument<MongoItem>('items');
 
 /**
  * Endpoint that just response with a dummy object. Useful for checking if the server is alive.
@@ -22,12 +30,17 @@ export const saveNewItemCtrl = createEndpoint(req =>
 		// TODO: validate image (size)
 		// TODO: validate description
 
-		.chain(req => saveImageAsStatic(req.files.image))
-
-		// TODO: save data
-		.map(imageName => ({
+		.chain(req =>
+			// Save item to DB
+			saveImageAsStatic(req.files.image)
+				.chain(imageName => saveItem({
+					description: req.body.description,
+					image: imageName
+				}))
+		)
+		.map(item => ({
 			ok: true,
-			image: imageName
+			item: item
 		}))
 	.catch(caseError(isInstanceOf(FileExtensionError), err => Task.reject(new BadRequestError(err))))
 	.catch(
@@ -35,8 +48,14 @@ export const saveNewItemCtrl = createEndpoint(req =>
 			isInstanceOf(
 				FsError,
 				SyntaxJSONError,
-				InvalidJSONError
+				InvalidJSONError,
 			),
+			err => asUnknownError(err)
+		)
+	)
+	.catch(
+		caseError(
+			isMongoError,
 			err => asUnknownError(err)
 		)
 	)
