@@ -1,5 +1,6 @@
 import { Component } from '../component';
 import { Item } from '../../model/item';
+import { readFileAsDataUrl } from '../../utils/read-file-as-data-url';
 
 require('./item.component.less');
 
@@ -10,8 +11,11 @@ export class ItemComponent extends Component {
 		super(require('./item.component.html'));
 
 		this._model = model
-			.subscribe('description', description => {
-				this._updateDescription(description);
+			.subscribe('description', _ => {
+				this._updateDescription();
+			})
+			.subscribe('image', _ => {
+				this._updateImage();
 			})
 			.subscribe('delete', _ => {
 				this._destroy();
@@ -19,7 +23,8 @@ export class ItemComponent extends Component {
 		;
 
 		this
-			._updateDescription(this.getModel().getDescription())
+			._updateDescription()
+			._updateImage()
 		;
 	}
 
@@ -35,8 +40,19 @@ export class ItemComponent extends Component {
 		return this._model;
 	}
 
-	private _updateDescription(description: string) {
-		this.$dom.find('.description').text(description);
+	private _updateDescription() {
+		this.$dom.find('.description').text(this.getModel().getDescription());
+		return this;
+	}
+
+	private _updateImage() {
+		readFileAsDataUrl(this.getModel().getImageFile())
+			.fork(
+				_ => {
+					// TODO: handle error
+				}, image => {
+					this.$dom.find('.thumbnail').attr('src', image);
+				});
 		return this;
 	}
 

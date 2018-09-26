@@ -4,22 +4,18 @@ import { itemsStore } from './model';
 
 export class Item extends Observable<{
 	description: string;
+	image: File;
 	delete: Item;
 }>().from(EmptySuperClass) {
-	private _image: File;
+	private _imageFile: File = null as any;
 	private _description: string = '';
 
 	constructor (description: string, image: File | null) {
 		super();
 
-		if (!image) {
-			// TODO: do it the Task way?
-			throw new Error('You must supply an image for the item!');
-		}
-
-		this.setDescription(description);
-		
-		this._image = image;
+		this
+			.setDescription(description)
+			.setImageFile(image);
 	}
 	
 	setDescription (description: string) {
@@ -39,8 +35,18 @@ export class Item extends Observable<{
 		return this._description;
 	}
 
-	getImage () {
-		return this._image;
+	setImageFile (image: File | null) {
+		if (!image) {
+			// TODO: do it the Task way?
+			throw new Error('You must supply an image for the item!');
+		}
+		this._imageFile = image;
+
+		return this;
+	}
+
+	getImageFile () {
+		return this._imageFile;
 	}
 
 	delete() {
