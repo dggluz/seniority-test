@@ -1,8 +1,10 @@
 import { Task, UnknownError } from '@ts-task/task';
 import { HttpError, InternalServerError } from '../http-errors';
 import { Request, Response } from 'restify';
-import { tap, logUnhandledError, noop } from '../utils';
 import { caseError, isInstanceOf } from '@ts-task/utils';
+import { tap } from '../utils/tap';
+import { logUnhandledError } from '../utils/log-unhandled-error';
+import { noop } from '../utils/noop';
 
 /**
  * Takes a controller function and sends its result to the client, managing errors.

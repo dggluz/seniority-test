@@ -6,7 +6,7 @@ import { readFile as rf } from 'fs';
 import { Task } from '@ts-task/task';
 import { Contract } from 'parmenides';
 import { share, isInstanceOf } from '@ts-task/utils';
-import { taskValidation } from './utils';
+import { taskValidation } from './utils/task-validation';
 
 /**
  * Represents an error when accessing the OS file system

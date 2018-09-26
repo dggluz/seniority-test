@@ -1,8 +1,9 @@
-import { overwrite, taskValidation } from '../utils';
 import { BadRequestError } from '../http-errors';
 import { RequestFileInterface } from 'restify';
 import { objOf, str } from 'parmenides';
 import { Task } from '@ts-task/task';
+import { taskValidation } from '../utils/task-validation';
+import { overwrite } from '../utils/overwrite';
 
 const isFile = objOf<FileData>({
 	type: str,
