@@ -1,6 +1,7 @@
 import { NewItemFormComponent } from './components/new-item-form/new-item-form.component';
 import { ItemsWrapperComponent } from './components/items-wrapper/items-wrapper.component';
 import { ItemsTitleComponent } from './components/items-title/items-title.component';
+import { initPersistence } from './persistence/persistence';
 
 new NewItemFormComponent()
 	.appendTo('.new-item-form-wrapper')
@@ -13,3 +14,5 @@ new ItemsTitleComponent()
 new ItemsWrapperComponent()
 	.appendTo('.items-wrapper')
 ;
+
+initPersistence();
