@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/dggluz/seniority-test#readme",
   "devDependencies": {
+    "@types/image-size": "0.0.29",
     "@types/jest": "^23.3.2",
     "@types/mongodb": "^3.1.9",
     "@types/restify": "^7.2.4",
@@ -31,6 +32,7 @@
   "dependencies": {
     "@ts-task/task": "^1.0.0",
     "@ts-task/utils": "0.0.1",
+    "image-size": "^0.6.3",
     "mongodb": "^3.1.6",
     "parmenides": "0.0.2",
     "restify": "^7.2.1",
