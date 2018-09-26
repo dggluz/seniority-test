@@ -15,13 +15,13 @@ Task.all([
 			console.error(err);
 			process.exit(1);
 		}, ([server, configs]) => {
+			// Setting up API routes
 			server.get('/api/ping', pingCtrl);
 			server.post('/api/item', saveNewItemCtrl);
 
-			const staticDir = resolve(process.cwd(), `./${configs.static.namespace}/../`);
-			console.log('static dir', staticDir);
+			// Setting up static server
 			server.get(`/${configs.static.namespace}/*`, plugins.serveStatic({
-				directory: staticDir,
+				directory: resolve(process.cwd(), `./${configs.static.namespace}/../`),
 				default: 'index.html'
 			}));
 		}
