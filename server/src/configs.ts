@@ -1,5 +1,5 @@
 import { readAndValidateJSONFile } from './fs-utils';
-import { strictObjOf, num } from 'parmenides';
+import { strictObjOf, num, str } from 'parmenides';
 
 /**
  * Contract (see parmenides) to validate against the
@@ -11,6 +11,9 @@ import { strictObjOf, num } from 'parmenides';
 const configsContract = strictObjOf({
 	server: strictObjOf({
 		port: num
+	}),
+	static: strictObjOf({
+		namespace: str
 	})
 });
 

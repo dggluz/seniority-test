@@ -4,10 +4,17 @@ import { RequestFileInterface } from 'restify';
 import { objOf, str } from 'parmenides';
 import { Task } from '@ts-task/task';
 
-const isFile = objOf<RequestFileInterface>({
+const isFile = objOf<FileData>({
 	type: str,
-	path: str
+	path: str,
+	name: str
 });
+
+export type FileData = {
+	type: string;
+	path: string;
+	name: string;
+};
 
 export const checkFiles = <R extends {
 	files?: {
@@ -21,7 +28,7 @@ export const checkFiles = <R extends {
 
 		return taskValidation(
 			objOf<{
-				[name in T]: RequestFileInterface;
+				[name in T]: FileData;
 			}>(
 				expectedFiles.reduce(
 					(contractObj, aFileName) => {

@@ -72,3 +72,10 @@ export const overwrite = <A, B> (target: A, source: B) =>
 		source
 	) as any as Overwrite<A, B>
 ;
+
+export const rejectIf = <T, E> (predicate: (x: T) => boolean, error: E) =>
+	(x: T): Task<T, E> =>
+		predicate(x) ?
+			Task.reject(error) :
+			Task.resolve(x)
+;
