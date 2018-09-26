@@ -19,10 +19,14 @@ export class NewItemFormComponent extends Component {
 
 			// TODO: change this
 			const $description = this.$dom.find('#exampleInputEmail1');
-			itemsStore.addItem(new Item(
+			Item.create(
 				$description.val() as string,
 				this._imageFileSelector.getImageFile()
-			));
+			).fork(_err => {
+				// TODO: handle errors
+			}, item => {
+				itemsStore.addItem(item);
+			});
 		});
 
 		return this;

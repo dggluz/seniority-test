@@ -14,7 +14,6 @@ export class FileButtonComponent extends FileSelector(Component) {
 		this.$dom
 			.find('input[type=file]')
 			.change(e => {
-				console.log(e);
 				const files = getEventTargetProp<FileList>(e.originalEvent, 'files');
 				if (files) {
 					// TODO: validate there's only one file

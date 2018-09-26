@@ -1,6 +1,25 @@
+import { Task } from '@ts-task/task';
 import { Observable } from '../utils/observable.mixin';
 import { EmptySuperClass } from '../utils/empty-super-class';
 import { itemsStore } from './model';
+import { rejectIf } from '../utils/reject-if';
+import { tap } from '../utils/tap';
+
+export class ItemDescriptionError extends Error {
+	ItemDescriptionError = 'ItemDescriptionError';
+
+	constructor (public description: string) {
+		super(`The description "${description}" is invalid (can not be empty and must not exceed 300 characters)`);
+	}
+}
+
+export class NoItemImageError extends Error {
+	NoItemImage = 'NoItemImage';
+
+	constructor () {
+		super('You must supply an image for the item');
+	}
+}
 
 export class Item extends Observable<{
 	description: string;
@@ -10,25 +29,26 @@ export class Item extends Observable<{
 	private _imageFile: File = null as any;
 	private _description: string = '';
 
-	constructor (description: string, image: File | null) {
-		super();
+	static create (description: string, image: File | null) {
+		return Task.resolve(new Item())
+			.chain(item => item.setDescription(description))
+			.chain(item => item.setImageFile(image))
+		;
+	}
 
-		this
-			.setDescription(description)
-			.setImageFile(image);
+	private constructor () {
+		super();
 	}
 	
 	setDescription (description: string) {
-		if (!/.{1,300}/.test(description)) {
-			// TODO: do it the Task way?
-			throw new Error('The description is invalid');
-		}
-		
-		this._description = description;
-
-		this._notifyObservers('description', this.getDescription());
-
-		return this;
+		return Task
+			.resolve(this)
+			.chain(rejectIf(_ => !/.{1,300}/.test(description), new ItemDescriptionError(description)))
+			.map(tap(_ => {
+				this._description = description;
+				this._notifyObservers('description', this.getDescription());		
+			}))
+		;
 	}
 
 	getDescription () {
@@ -36,13 +56,19 @@ export class Item extends Observable<{
 	}
 
 	setImageFile (image: File | null) {
-		if (!image) {
-			// TODO: do it the Task way?
-			throw new Error('You must supply an image for the item!');
-		}
-		this._imageFile = image;
+		return Task
+			.resolve(this)
+			.chain(_ => {
+				if (!image) {
+					return Task.reject(new NoItemImageError());
+				}
 
-		return this;
+				this._imageFile = image;
+				this._notifyObservers('image', this.getImageFile());
+
+				return Task.resolve(this);
+			})
+		;
 	}
 
 	getImageFile () {

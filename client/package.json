@@ -36,6 +36,7 @@
     "webpack-cli": "^3.1.0"
   },
   "dependencies": {
-    "@ts-task/task": "^1.0.0"
+    "@ts-task/task": "^1.0.0",
+    "@ts-task/utils": "0.0.1"
   }
 }
