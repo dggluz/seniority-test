@@ -2,7 +2,7 @@
 // different classes to let TypeScript infer them as different types. Hence, I added a public property with
 // the name of the Error to each of the Error classes
 
-import { readFile as rf } from 'fs';
+import { readFile as rf, rename } from 'fs';
 import { Task } from '@ts-task/task';
 import { Contract } from 'parmenides';
 import { share, isInstanceOf } from '@ts-task/utils';
@@ -108,3 +108,21 @@ export const readAndValidateJSONFile = <T> (path: string, contract: Contract<T>)
  * @return boolean (typed as `is FsError | SyntaxJSONError | InvalidJSONError`)
  */
 export const isJSONFileError = isInstanceOf(FsError, SyntaxJSONError, InvalidJSONError);
+
+/**
+ * Moves a file from a path to another one, returning a Task.
+ * @param originalPath File's original path
+ * @param newPath File's new path
+ */
+export const moveFile = (originalPath: string, newPath: string) =>
+	new Task<void, FsError>((resolve, reject) => {
+		rename(originalPath, newPath, err => {
+			if (err) {
+				reject(new FsError(err));
+			}
+			else {
+				resolve(undefined);
+			}
+		});
+	})
+;
