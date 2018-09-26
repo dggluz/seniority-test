@@ -36,6 +36,12 @@ export const createServer = () =>
 			server.use(plugins.acceptParser(server.acceptable));
 			server.use(plugins.queryParser());
 			server.use(plugins.bodyParser());
+			// CORS: accept all requests
+			server.use((_req, res, next) => {
+				res.header('Access-Control-Allow-Origin', '*');
+				res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+				return next();
+			});
 		
 			server.listen(configs.server.port, function () {
 				console.log('%s listening at %s', server.name, server.url);
