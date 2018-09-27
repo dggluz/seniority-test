@@ -33,7 +33,16 @@ export const deleteItemCtrl = createEndpoint(req =>
 			// First attempt to delete the document and then the image, since it's better to
 			// have an extra image in the filesystem that an Item without its image file.
 			return deleteItem(item._id)
-				.chain(_ => deleteStaticImage(item.image));
+				.chain(_ => deleteStaticImage(item.image))
+				// Ignore error if we can't delete image
+				.catch(
+					caseError(isInstanceOf(FsError),
+					err => {
+						console.error('Could not delete item\'s image when deleting item', err);
+						return Task.resolve(undefined);
+					})
+				)
+			;
 		})
 
 		// Server's response
