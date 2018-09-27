@@ -6,7 +6,12 @@ export interface TextboxComponentOptions {
 	placeholder?: string;
 	description?: string;
 	value?: string;
+	required?: boolean;
+	maxLength?: number;
+	type?: InputTypes;
 }
+
+export type InputTypes = 'text' | 'email' | 'search' | 'password' | 'tel' | 'url';
 
 export class TextboxComponent extends Component {
 	private _id = generate();
@@ -40,6 +45,9 @@ export class TextboxComponent extends Component {
 			.setLabel(options.label || '')
 			.setDescription(options.description || '')
 			.setValue(options.value || '')
+			.setRequired(!!options.required)
+			.setMaxLength(options.maxLength)
+			.setType(options.type)
 		;
 	}
 
@@ -67,8 +75,23 @@ export class TextboxComponent extends Component {
 		return this;
 	}
 
+	setRequired (required: boolean) {
+		this.$getInput().get(0).required = required;
+		return this;
+	}
+
+	setMaxLength (maxLength?: number) {
+		this.$getInput().attr('maxlength', typeof maxLength === 'number' ? maxLength : -1);
+		return this;
+	}
+
+	setType (type: InputTypes = 'text') {
+		this.$getInput().attr('type', type);
+		return this;
+	}
+
 	private $getInput () {
-		return this.$dom.find('input');
+		return this.$dom.find('input') as JQuery<HTMLInputElement>;
 	}
 
 	private $getLabel () {

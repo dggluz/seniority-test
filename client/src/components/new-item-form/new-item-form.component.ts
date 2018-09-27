@@ -18,7 +18,9 @@ export class NewItemFormComponent extends Component {
 		this._description = new TextboxComponent({
 			placeholder: 'Description...',
 			description: 'The description for your item',
-			label: 'Description'
+			label: 'Description',
+			maxLength: 300,
+			required: true
 		})
 			.appendTo(this.$dom.find('.description-wrapper'))
 		;
