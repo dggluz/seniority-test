@@ -5,11 +5,14 @@ export class ItemsTitleComponent extends Component {
 	constructor () {
 		super(require('./items-title.component.html'));
 
-		itemsStore.subscribe('items-qty', _ => {
-			this._updateItemsQty();
-		});
-
-		this._updateItemsQty();
+		itemsStore
+			.subscribe('items-qty', _ => {
+				this._updateItemsQty();
+			})
+			.subscribe('init', _ => {
+				this._updateItemsQty();
+			})
+		;
 	}
 
 	private _updateItemsQty () {
