@@ -5,7 +5,7 @@ export class XHRError extends Error {
 }
 
 export const xhrTask = (options: JQuery.AjaxSettings) =>
-	new Task<any, Error>((resolve, reject) => {
+	new Task<any, XHRError>((resolve, reject) => {
 		$.ajax({
 			...options,
 			error: (_jqXHT, _textStatus, err) => reject(new XHRError(err)),
