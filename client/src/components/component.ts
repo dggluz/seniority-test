@@ -1,4 +1,3 @@
-// TODO: ensure it's abstract (but, without "abstract" keyword to allow mixins)
 export class Component {
 	protected $dom: JQuery<HTMLElement>;
 
@@ -8,6 +7,12 @@ export class Component {
 	 * @param html HTML that corresponds with the component.
 	 */
 	constructor (html: string) {
+		// As we cannot make this class "abstract" (it could not be extended by mixin if it was),
+		// we just perform the following runtime assertion to ensure it is not instantiated directly.
+		if (this.constructor === Component) {
+			throw new Error('Component is inteded to be subclassed, not to be instantiated directly.');
+		}
+
 		this.$dom = $(html);
 		this._setHandlers();
 	}
