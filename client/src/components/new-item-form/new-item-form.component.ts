@@ -2,25 +2,30 @@ import { Component } from '../component';
 import { ImageFileLoaderComponent } from '../image-file-loader/image-file-loader.component';
 import { itemsStore } from '../../model/model';
 import { Item } from '../../model/item';
+import { TextboxComponent } from '../textbox/textbox.component';
 
 // TODO: move to a generic form component
 export class NewItemFormComponent extends Component {
 	private _imageFileSelector: ImageFileLoaderComponent;
+	private _description: TextboxComponent;
 
 	constructor () {
 		super(require('./new-item-form.component.html'));
 		this._imageFileSelector = new ImageFileLoaderComponent()
-			.appendTo(this.$dom.find('.image-file-selector-wrapper'));
+			.appendTo(this.$dom.find('.image-file-selector-wrapper'))
+		;
+
+		this._description = new TextboxComponent()
+			.appendTo(this.$dom.find('.description-wrapper'))
+		;
 	}
 
 	protected _setHandlers () {
 		this.$dom.children('form').submit(e => {
 			e.preventDefault();
 
-			// TODO: change this
-			const $description = this.$dom.find('#exampleInputEmail1');
 			Item.create(
-				$description.val() as string,
+				this._description.getValue(),
 				this._imageFileSelector.getImageFile()
 			).fork(_err => {
 				// TODO: handle errors
@@ -35,8 +40,7 @@ export class NewItemFormComponent extends Component {
 
 	private _restart () {
 		this._imageFileSelector.restart();
-		// TODO: change this
-		this.$dom.find('#exampleInputEmail1').val('');
+		this._description.setValue('');
 		return this;
 	}
 }

@@ -33,7 +33,6 @@ export class FileButtonComponent extends FileSelector(Component) {
 					// TODO: validate file permissions
 					// TODO: validate file type
 					// TODO: extra validations (like image size)
-					// TODO: trigger event handlers
 					this.setFile(files[0]);
 					this._triggerFileCallbacks();
 				}

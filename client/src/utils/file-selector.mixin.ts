@@ -7,7 +7,6 @@ export const FileSelector = <T extends ClassType<any>> (Base: T) =>
 		protected _fileCallbacks: FileCallback[] = [];
 		protected _file: File | null = null;
 
-		// TODO: improve typings
 		onNewFile (callback: FileCallback) {
 			this._fileCallbacks.push(callback);
 			return this;
