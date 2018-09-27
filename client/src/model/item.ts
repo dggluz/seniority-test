@@ -4,6 +4,9 @@ import { EmptySuperClass } from '../utils/empty-super-class';
 import { itemsStore } from './model';
 import { rejectIf } from '../utils/reject-if';
 import { tap } from '../utils/tap';
+import { ImageWrapper } from './image-wrapper/image-wrapper';
+import { ImageWrapperFile } from './image-wrapper/image-wrapper-file';
+import { ImageWrapperUrl } from './image-wrapper/image-wrapper-url';
 
 export class ItemDescriptionError extends Error {
 	ItemDescriptionError = 'ItemDescriptionError';
@@ -23,16 +26,16 @@ export class NoItemImageError extends Error {
 
 export class Item extends Observable<{
 	description: string;
-	image: File;
+	image: string;
 	delete: Item;
 }>().from(EmptySuperClass) {
-	private _imageFile: File = null as any;
+	private _image: ImageWrapper = null as any;
 	private _description: string = '';
 
 	static create (description: string, image: File | null) {
 		return Task.resolve(new Item())
 			.chain(item => item.setDescription(description))
-			.chain(item => item.setImageFile(image))
+			.chain(item => item.setImage(image))
 		;
 	}
 
@@ -55,24 +58,37 @@ export class Item extends Observable<{
 		return this._description;
 	}
 
-	setImageFile (image: File | null) {
+	setImage (image: string | File | null) {
 		return Task
 			.resolve(this)
 			.chain(_ => {
 				if (!image) {
 					return Task.reject(new NoItemImageError());
 				}
-
-				this._imageFile = image;
-				this._notifyObservers('image', this.getImageFile());
-
-				return Task.resolve(this);
+				
+				if (typeof image === 'string') {
+					this._image = new ImageWrapperUrl(image);
+				}
+				else {
+					this._image = new ImageWrapperFile(image);
+				}
+				return Task.resolve(this)
 			})
+			.chain(_ =>
+				this
+					.getImageAsUrl()
+					.map(imageUrl => this._notifyObservers('image', imageUrl))
+			)
+			.map(_ => this)
 		;
 	}
 
-	getImageFile () {
-		return this._imageFile;
+	getImageAsUrl () {
+		return this._image.getAsUrl();
+	}
+
+	getImageAsFile () {
+		return this._image.getAsFile();
 	}
 
 	delete() {

@@ -1,6 +1,5 @@
 import { Component } from '../component';
 import { Item } from '../../model/item';
-import { readFileAsDataUrl } from '../../utils/read-file-as-data-url';
 
 require('./item.component.less');
 
@@ -46,13 +45,15 @@ export class ItemComponent extends Component {
 	}
 
 	private _updateImage() {
-		readFileAsDataUrl(this.getModel().getImageFile())
+		this
+			.getModel()
+			.getImageAsUrl()
 			.fork(
-				_ => {
-					// TODO: handle error
-				}, image => {
-					this.$dom.find('.thumbnail').attr('src', image);
-				});
+				// TODO: handle error
+				console.error,
+				image =>
+					this.$dom.find('.thumbnail').attr('src', image)
+			);
 		return this;
 	}
 

@@ -3,7 +3,13 @@ import { apiDomain } from './api-domain';
 import { arrOf, strictObjOf, str } from 'parmenides';
 import { validateServerResponse } from './validate-server-response';
 
-const getAllItemsContract = arrOf(
+export interface ItemData {
+	_id: string;
+	description: string;
+	image: string;
+}
+
+const getAllItemsContract = arrOf<ItemData>(
 	strictObjOf({
 		_id: str,
 		description: str,
