@@ -53,7 +53,7 @@ export const saveNewItemCtrl = createEndpoint(req =>
 		// Errors related to image handling will be considered BadRequestError
 		.catch(caseError(
 			isInstanceOf(
-				FileExtensionError,InvalidImageDimensions, ImageSizeError),
+				FileExtensionError, InvalidImageDimensions, ImageSizeError),
 			err => Task.reject(new BadRequestError(err))
 		))
 
