@@ -1,6 +1,5 @@
 import { Task } from '@ts-task/task';
 import { createEndpoint } from '../server-utils/create-endpoint';
-import { checkBody } from '../middlewares/check-body.middleware';
 import { objectOfLike, mongoIdLike } from '../utils/type-like';
 import { findItem } from '../db/find-item';
 import { caseError, isInstanceOf } from '@ts-task/utils';
@@ -10,6 +9,7 @@ import { asUnknownError } from '@ts-task/task/dist/lib/src/operators';
 import { FsError, SyntaxJSONError, InvalidJSONError } from '../fs-utils';
 import { deleteItem } from '../db/delete-item';
 import { deleteStaticImage } from '../utils/delete-static-image';
+import { checkParams } from '../middlewares/check-params.middleware';
 
 /**
  * Endpoint that deletes an item by id.
@@ -19,13 +19,13 @@ export const deleteItemCtrl = createEndpoint(req =>
 		.resolve(req)
 
 		// Check we received a MongoId
-		.chain(checkBody(objectOfLike({
-			_id: mongoIdLike
+		.chain(checkParams(objectOfLike({
+			itemId: mongoIdLike
 		})))
 
 		// Find the item to obtain its image
 		.chain(req => findItem({
-			_id: req.body._id
+			_id: req.params.itemId
 		}))
 
 		// Delete item and image

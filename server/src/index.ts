@@ -22,7 +22,7 @@ Task.all([
 			server.get('/api/ping', pingCtrl);
 			server.post('/api/items', saveNewItemCtrl);
 			server.get('/api/items', getItemsCtrl);
-			server.del('/api/items', deleteItemCtrl);
+			server.del('/api/items/:itemId', deleteItemCtrl);
 			server.patch('/api/items/:itemId/description', updateItemDescriptionCtrl);
 
 			// Setting up static server
