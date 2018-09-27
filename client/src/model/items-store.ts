@@ -15,17 +15,23 @@ export class ItemsStore extends Observable<{
 
 	// TODO: improve typings
 	init (itemsData: ItemData[]) {
-		Task
-			.all(itemsData.map(anItemData =>
-				Item.create(anItemData.description, anItemData.image as any)
-			))
-			.fork(
-				console.error,
-				items => {
-					this._items = items;
-					this._notifyObservers('init', this.getItems());
-				}
-			);
+		// TODO: remove "if" when Task.all is fixed for empty arrays
+		if (itemsData.length) {
+			Task
+				.all(itemsData.map(anItemData =>
+					Item.create(anItemData.description, anItemData.image as any)
+				))
+				.fork(
+					console.error,
+					items => {
+						this._items = items;
+						this._notifyObservers('init', this.getItems());
+					}
+				);
+		}
+		else {
+			this._notifyObservers('init', this.getItems());
+		}
 		console.log(itemsData);
 		return this;
 	}
