@@ -8,6 +8,14 @@ export type MapOfValidators <T> = {
 	[P in keyof T]: Validator<T[P]>;
 };
 
+export class TypeLikeError extends TypeError {
+	TypeLikeError = 'TypeLikeError';
+}
+
+export const isTypeLikeError = (err: any): err is TypeLikeError =>
+	err.TypeLikeError === 'TypeLikeError'
+;
+
 /**
  * It is similar to `objOf` from parmenides, but instead of returning
  * the same object that is validated, returns a mapped object (mapped with the validator
@@ -31,7 +39,7 @@ export const objectOfLike = <T> (checkersMap: MapOfValidators<T>) => {
 				ret[aKey] = aChecker(aTargetValue);
 			} catch (e) {
 				if (e instanceof TypeError) {
-					throw new TypeError(`[${aKey}]: ${e.message}`);
+					throw new TypeLikeError(`[${aKey}]: ${e.message}`);
 				}
 				throw e;
 			}
@@ -46,7 +54,7 @@ export const mongoIdLike = (mongoId: string | ObjectId) => {
 	if (isInstanceOf(ObjectID)(mongoId) || typeof mongoId === 'string' && /^[a-f0-9]{24}$/i.test(mongoId)) {
 		return new ObjectId(mongoId);
 	}
-	throw new TypeError(
+	throw new TypeLikeError(
 		`The value is not a MongoId (has "${(
 			mongoId
 		)}" value)`
