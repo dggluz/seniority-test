@@ -7,11 +7,8 @@ export const deleteItem = (item: Item) =>
 		.getId()
 		.chain(itemId =>
 			xhrTask({
-				url: `${apiDomain}/items`,
-				method: 'DELETE',
-				data: {
-					_id: itemId
-				}
+				url: `${apiDomain}/items/${itemId}`,
+				method: 'DELETE'
 			})
 		)
 		// TODO: extract into function to reuse between all requests savings
