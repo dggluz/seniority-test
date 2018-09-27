@@ -10,6 +10,7 @@ export class ImageFileLoaderComponent extends Component {
 	constructor () {
 		super(require('./image-file-loader.component.html'));
 		this._fileLoader = new FileLoaderComponent()
+			.configureAcceptedType('image/*')
 			.appendTo(this.$dom.find('.file-loader-wrapper'))
 			.onNewFile(file => {
 				readFileAsDataUrl(file)

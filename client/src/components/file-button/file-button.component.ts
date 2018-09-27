@@ -4,20 +4,28 @@ import { FileSelector } from '../../utils/file-selector.mixin';
 
 require('./file-button.component.less');
 
-// TODO: support specific mime types
 export class FileButtonComponent extends FileSelector(Component) {
 	constructor () {
 		super(require('./file-button.component.html'));
 	}
 
-	restart () {
-		this.$dom.find('input[type=file]').val('');
+	configureAcceptedType (acceptedType: string) {
+		this._getInputFile().attr('accept', acceptedType);
 		return this;
 	}
 
+	restart () {
+		this._getInputFile().val('');
+		return this;
+	}
+
+	private _getInputFile () {
+		return this.$dom.find('input[type=file]');
+	}
+
 	protected _setHandlers () {
-		this.$dom
-			.find('input[type=file]')
+		this
+			._getInputFile()
 			.change(e => {
 				const files = getEventTargetProp<FileList>(e.originalEvent, 'files');
 				if (files) {

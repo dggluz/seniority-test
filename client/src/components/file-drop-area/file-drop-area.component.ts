@@ -3,11 +3,15 @@ import { FileSelector } from '../../utils/file-selector.mixin';
 
 require('./file-drop-area.component.less');
 
-// TODO: support specific mime types
 // TODO: different styles for invalid drags
 export class FileDropAreaComponent extends FileSelector(Component) {
 	constructor () {
 		super(require('./file-drop-area.component.html'));
+	}
+
+	configureAcceptedType (_acceptedType: string) {
+		// TODO: view if it's possible to accept only certain file types
+		return this;
 	}
 
 	restart () {

@@ -15,7 +15,6 @@ export class FileLoaderComponent extends Component {
 			.appendTo(this.$dom.find('.file-drop-area-wrapper'));
 	}
 
-	// TODO: improve typings
 	onNewFile (callback: FileCallback) {
 		this
 			._fileButton
@@ -27,6 +26,12 @@ export class FileLoaderComponent extends Component {
 	getFile () {
 		return this._fileButton.getFile() || this._fileDropArea.getFile();
 	}
+
+	configureAcceptedType (acceptedType: string) {
+		this._fileButton.configureAcceptedType(acceptedType);
+		this._fileDropArea.configureAcceptedType(acceptedType);
+		return this;
+	}	
 
 	restart () {
 		this._fileButton.restart();
