@@ -27,4 +27,10 @@ export class FileLoaderComponent extends Component {
 	getFile () {
 		return this._fileButton.getFile() || this._fileDropArea.getFile();
 	}
+
+	restart () {
+		this._fileButton.restart();
+		this._fileDropArea.restart();
+		return this;
+	}
 }

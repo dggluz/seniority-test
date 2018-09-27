@@ -10,6 +10,11 @@ export class FileDropAreaComponent extends FileSelector(Component) {
 		super(require('./file-drop-area.component.html'));
 	}
 
+	restart () {
+		resetFileDropArea(this.$dom);
+		return this;
+	}
+
 	protected _setHandlers () {
 		resetFileDropArea(this.$dom);
 		this.$dom

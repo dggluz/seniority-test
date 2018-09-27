@@ -13,7 +13,7 @@ export class NewItemFormComponent extends Component {
 			.appendTo(this.$dom.find('.image-file-selector-wrapper'));
 	}
 
-	_setHandlers () {
+	protected _setHandlers () {
 		this.$dom.children('form').submit(e => {
 			e.preventDefault();
 
@@ -26,9 +26,17 @@ export class NewItemFormComponent extends Component {
 				// TODO: handle errors
 			}, item => {
 				itemsStore.addItem(item);
+				this._restart();
 			});
 		});
 
+		return this;
+	}
+
+	private _restart () {
+		this._imageFileSelector.restart();
+		// TODO: change this
+		this.$dom.find('#exampleInputEmail1').val('');
 		return this;
 	}
 }

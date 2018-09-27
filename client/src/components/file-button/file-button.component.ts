@@ -10,6 +10,11 @@ export class FileButtonComponent extends FileSelector(Component) {
 		super(require('./file-button.component.html'));
 	}
 
+	restart () {
+		this.$dom.find('input[type=file]').val('');
+		return this;
+	}
+
 	protected _setHandlers () {
 		this.$dom
 			.find('input[type=file]')

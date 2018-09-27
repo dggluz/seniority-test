@@ -16,6 +16,7 @@ export class ImageFileLoaderComponent extends Component {
 					.fork(_ => {
 						// TODO: handle error.
 					}, image => {
+						// TODO: extract to method
 						this.$dom.find('.image-preview').removeClass('d-none');
 						this.$dom.find('.image-preview img').attr('src', image);
 					})
@@ -26,5 +27,12 @@ export class ImageFileLoaderComponent extends Component {
 
 	getImageFile () {
 		return this._fileLoader.getFile();
+	}
+
+	restart () {
+		this._fileLoader.restart();
+		this.$dom.find('.image-preview').addClass('d-none');
+		this.$dom.find('.image-preview img').attr('src', '');
+		return this;
 	}
 }
