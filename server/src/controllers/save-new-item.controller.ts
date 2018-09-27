@@ -14,6 +14,7 @@ import { validateDescription } from '../validations/validate-description';
 import { validateImageSize, InvalidImageDimensions } from '../validations/validate-image-size';
 import { ImageSizeError } from '../utils/get-image-size';
 import { saveNewItem } from '../db/save-new-item';
+import { getItemWithImageUrl } from '../utils/get-item-with-image-url';
 
 /**
  * Endpoint that saves items to DB.
@@ -45,6 +46,7 @@ export const saveNewItemCtrl = createEndpoint(req =>
 					description: req.body.description,
 					image: imageName
 				}))
+				.chain(getItemWithImageUrl)
 		)
 
 		// Send response to client
