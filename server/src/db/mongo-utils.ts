@@ -1,6 +1,6 @@
 import { Task } from '@ts-task/task';
 import { share, isInstanceOf } from '@ts-task/utils';
-import { MongoClient, MongoError as _MongoError, Collection, ObjectId } from 'mongodb';
+import { MongoClient, MongoError as _MongoError, Collection, ObjectId, FilterQuery } from 'mongodb';
 import { Omit } from 'type-zoo/types';
 import { dbSecrets } from '../secrets';
 
@@ -57,6 +57,22 @@ const mongoInsertOne = <T extends MongoDocument>  (document: UninsertedDocument<
 						}
 					}
 				})
+		})
+;
+
+const mongoFind = <T extends MongoDocument> (criteria: FilterQuery<T>) =>
+	(collection: Collection<T>) =>
+		new Task<T[], MongoError>((resolve, reject) => {
+			collection
+				.find<T>(criteria)
+				.toArray((err, result) => {
+					if (err) {
+						reject(new MongoError(err));
+					}
+					else {
+						resolve(result);
+					}
+				});
 		})
 ;
 
@@ -124,6 +140,13 @@ export class MongoInsertError extends Error {
 // 		super('MongoDocument not found');
 // 	}
 // }
+
+export const getAllDocuments = <T extends MongoDocument> (collectionName: string) =>
+	() =>
+		dbCnx
+			.map(db => db.collection(collectionName))
+			.chain(mongoFind<T>({}))
+;
 
 export const insertOneDocument = <T extends MongoDocument> (collectionName: string) =>
 	(document: UninsertedDocument<T>) =>

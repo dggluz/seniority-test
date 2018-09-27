@@ -5,6 +5,7 @@ import { configs } from './configs';
 import { Task } from '@ts-task/task';
 import { plugins } from 'restify';
 import { resolve } from 'path';
+import { getItemsCtrl } from './controllers/get-items.controller';
 
 Task.all([
 	createServer(),
@@ -18,6 +19,7 @@ Task.all([
 			// Setting up API routes
 			server.get('/api/ping', pingCtrl);
 			server.post('/api/items', saveNewItemCtrl);
+			server.get('/api/items', getItemsCtrl);
 
 			// Setting up static server
 			server.get(`/${configs.static.namespace}/*`, plugins.serveStatic({
