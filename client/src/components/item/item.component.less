@@ -2,8 +2,19 @@
 
 x-item {
 	width: @image-width + 10px;
-}
-
-x-item .thumbnail {
-	width: @image-width;
+	
+	.thumbnail {
+		width: @image-width;
+	}
+	
+	input[type=file] {
+		top: 0px;
+		left: 0px;
+		bottom: 0px;
+		right: 0px;
+		z-index: 10;
+		opacity: 0;
+		cursor: pointer;
+		width: 100%;
+	}
 }

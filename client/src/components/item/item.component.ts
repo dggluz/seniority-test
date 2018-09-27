@@ -2,6 +2,7 @@ import { Component } from '../component';
 import { Item } from '../../model/item';
 import { TextboxComponent } from '../textbox/textbox.component';
 import { noop } from '../../utils/noop';
+import { getEventTargetProp } from '../../utils/get-event-target-prop';
 
 require('./item.component.less');
 
@@ -60,6 +61,22 @@ export class ItemComponent extends Component {
 		this.$dom.find('.description-label').click(e => {
 			e.preventDefault();
 			this._enterDescriptionEditionMode();
+		});
+
+		this.$dom.find('.image-selector').change(e => {
+			e.preventDefault();
+			const files = getEventTargetProp<FileList>(e.originalEvent, 'files');
+			if (files) {
+				// TODO: validate there's only one file
+				// TODO: validate file permissions
+				// TODO: validate file type
+				// TODO: extra validations (like image size)
+				this._model.setImage(files[0])
+					// TODO: improve this
+					// TODO: exit description edition mode on succes??
+					.fork(console.error, noop)
+				;
+			}
 		});
 
 		return this;
