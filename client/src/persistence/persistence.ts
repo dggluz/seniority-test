@@ -5,20 +5,30 @@ import { noop } from '../utils/noop';
 import { deleteItem } from './delete-item';
 import { Item } from '../model/item';
 import { saveItemDescription } from './save-item-description';
+import { saveItemImage } from './save-item-image';
 
 export const initPersistence = () => {
 	const subscribeToItemEvents = (item: Item) => {
 		item
-			.subscribe('description', _ => {
-				saveItemDescription(item)
-					.fork(
-						// TODO: improve error handling
-						console.error,
-						noop
-					)
-				;
-			})
-		;
+		.subscribe('description', _ => {
+			saveItemDescription(item)
+				.fork(
+					// TODO: improve error handling
+					console.error,
+					noop
+				)
+			;
+		})
+		.subscribe('image', _ => {
+			saveItemImage(item)
+				.fork(
+					// TODO: improve error handling
+					console.error,
+					noop
+				)
+			;
+		})
+;
 	};
 
 	getAllItems()
