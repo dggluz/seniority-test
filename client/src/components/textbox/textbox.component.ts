@@ -5,6 +5,7 @@ export interface TextboxComponentOptions {
 	label?: string;
 	placeholder?: string;
 	description?: string;
+	value?: string;
 }
 
 export class TextboxComponent extends Component {
@@ -38,6 +39,7 @@ export class TextboxComponent extends Component {
 			.setPlaceholder(options.placeholder || '')
 			.setLabel(options.label || '')
 			.setDescription(options.description || '')
+			.setValue(options.value || '')
 		;
 	}
 
