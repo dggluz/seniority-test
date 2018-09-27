@@ -10,26 +10,30 @@ import { saveItemImage } from './save-item-image';
 export const initPersistence = () => {
 	const subscribeToItemEvents = (item: Item) => {
 		item
-		.subscribe('description', _ => {
-			saveItemDescription(item)
-				.fork(
-					// TODO: improve error handling
-					console.error,
-					noop
-				)
-			;
-		})
-		.subscribe('image', _ => {
-			saveItemImage(item)
-				.fork(
-					// TODO: improve error handling
-					console.error,
-					noop
-				)
-			;
-		})
-;
+			.subscribe('description', _ => {
+				saveItemDescription(item)
+					.fork(
+						// TODO: improve error handling
+						console.error,
+						noop
+					)
+				;
+			})
+			.subscribe('image', _ => {
+				saveItemImage(item)
+					.fork(
+						// TODO: improve error handling
+						console.error,
+						noop
+					)
+				;
+			})
+		;
 	};
+
+	itemsStore.subscribe('init', items => {
+		items.forEach(subscribeToItemEvents);
+	});
 
 	getAllItems()
 		.map(itemsData => {
@@ -41,8 +45,6 @@ export const initPersistence = () => {
 				})
 				.subscribe('remove-item', deleteItem)
 			;
-
-			itemsStore.getItems().forEach(subscribeToItemEvents);
 		})
 		.fork(
 			// TODO: improve error handling
