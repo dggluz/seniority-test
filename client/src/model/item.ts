@@ -24,6 +24,10 @@ export class NoItemImageError extends Error {
 	}
 }
 
+export class ItemWithoutIdError extends Error {
+	ItemWithoutIdError = 'ItemWithoutIdError';
+}
+
 export class Item extends Observable<{
 	description: string;
 	image: string;
@@ -31,6 +35,7 @@ export class Item extends Observable<{
 }>().from(EmptySuperClass) {
 	private _image: ImageWrapper = null as any;
 	private _description: string = '';
+	private _id: Task<string, ItemWithoutIdError> = Task.reject(new ItemWithoutIdError());
 
 	static create (description: string, image: File | null) {
 		return Task.resolve(new Item())
@@ -43,6 +48,15 @@ export class Item extends Observable<{
 		super();
 	}
 	
+	setId (id: string) {
+		this._id = Task.resolve(id);
+		return this;
+	}
+
+	getId () {
+		return this._id;
+	}
+
 	setDescription (description: string) {
 		return Task
 			.resolve(this)

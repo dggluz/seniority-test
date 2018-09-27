@@ -9,13 +9,13 @@ export interface ItemData {
 	image: string;
 }
 
-const getAllItemsContract = arrOf<ItemData>(
-	strictObjOf({
-		_id: str,
-		description: str,
-		image: str
-	})
-);
+export const itemContract = strictObjOf<ItemData>({
+	_id: str,
+	description: str,
+	image: str
+});
+
+const getAllItemsContract = arrOf(itemContract);
 
 export const getAllItems = () =>
 	xhrTask({

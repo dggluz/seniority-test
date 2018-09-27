@@ -1,6 +1,9 @@
 import { Item } from '../model/item';
 import { apiDomain } from './api-domain';
 import { xhrTask } from '../utils/xhr-task';
+import { validateServerResponse } from './validate-server-response';
+import { itemContract } from './get-all-items';
+import { tap } from '../utils/tap';
 
 export const saveNewItem = (item: Item) => {
 	item
@@ -19,6 +22,10 @@ export const saveNewItem = (item: Item) => {
 				contentType: false
 			})
 		})
+		.chain(validateServerResponse(itemContract))
+		.map(tap(itemData =>
+			item.setId(itemData._id)
+		))
 		// TODO: extract into function to reuse between all requests savings
 		.fork(
 			// TODO: handle better errors
