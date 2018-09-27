@@ -1,19 +1,9 @@
 import { xhrTask } from '../utils/xhr-task';
 import { apiDomain } from './api-domain';
-import { arrOf, strictObjOf, str } from 'parmenides';
+import { arrOf } from 'parmenides';
 import { validateServerResponse } from './validate-server-response';
+import { itemContract } from './item-contract';
 
-export interface ItemData {
-	_id: string;
-	description: string;
-	image: string;
-}
-
-export const itemContract = strictObjOf<ItemData>({
-	_id: str,
-	description: str,
-	image: str
-});
 
 const getAllItemsContract = arrOf(itemContract);
 

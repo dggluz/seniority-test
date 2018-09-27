@@ -3,7 +3,7 @@ import { Observable } from '../utils/observable.mixin';
 import { EmptySuperClass } from '../utils/empty-super-class';
 import { remove } from '../utils/remove';
 import { Task } from '@ts-task/task';
-import { ItemData } from '../persistence/get-all-items';
+import { ItemData } from '../persistence/item-contract';
 
 export class ItemsStore extends Observable<{
 	'init': Item[];
