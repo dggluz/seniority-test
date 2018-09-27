@@ -8,7 +8,7 @@ export const saveNewItem = (item: Item) => {
 	formData.append('image', item.getImageFile());
 
 	return xhrTask({
-		url: `${apiDomain}/item`,
+		url: `${apiDomain}/items`,
 		method: 'POST',
 		data: formData,
 		// Needed to send a FormData:

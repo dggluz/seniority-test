@@ -17,7 +17,7 @@ Task.all([
 		}, ([server, configs]) => {
 			// Setting up API routes
 			server.get('/api/ping', pingCtrl);
-			server.post('/api/item', saveNewItemCtrl);
+			server.post('/api/items', saveNewItemCtrl);
 
 			// Setting up static server
 			server.get(`/${configs.static.namespace}/*`, plugins.serveStatic({
