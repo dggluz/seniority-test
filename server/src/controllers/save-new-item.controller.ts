@@ -49,12 +49,6 @@ export const saveNewItemCtrl = createEndpoint(req =>
 				.chain(getItemWithImageUrl)
 		)
 
-		// Send response to client
-		.map(item => ({
-			status: 'ok',
-			item: item
-		}))
-
 		// Handle errors:
 		// Errors related to image handling will be considered BadRequestError
 		.catch(caseError(
