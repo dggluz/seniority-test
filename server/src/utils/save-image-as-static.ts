@@ -31,7 +31,7 @@ export const saveImageAsStatic = (imageFile: FileData) =>
 				imageFile.path,
 				resolve(
 					process.cwd(),
-					`./${configs.assets.namespace}/images/`,
+					`./${configs.assets.namespace}/${configs.assets.imagesDir}/`,
 					newFileName
 				)
 			)
