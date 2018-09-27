@@ -19,14 +19,6 @@ export const createEndpoint = <T> (controller: (req: Request) => Task<T, HttpErr
 			.map(tap(result => res.send(200, result)))
 			.catch(
 				caseError(
-					isInstanceOf(UnknownError),
-					err => {
-						logUnhandledError(err);
-						return Task.reject(new InternalServerError());
-					})
-			)
-			.catch(
-				caseError(
 					isInstanceOf(HttpError),
 					err => {
 						res.send(err.errorCode, {
@@ -35,5 +27,12 @@ export const createEndpoint = <T> (controller: (req: Request) => Task<T, HttpErr
 						return Task.resolve(void 0);
 					})
 			)
+			.catch(err => {
+				const internalServerError = new InternalServerError();
+				res.send(internalServerError.errorCode, {
+					error: internalServerError.errorMessage
+				});
+				return Task.reject(err);
+			})
 			.fork(logUnhandledError, noop)
 ;
