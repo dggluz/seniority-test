@@ -6,6 +6,7 @@ import { Task } from '@ts-task/task';
 import { plugins } from 'restify';
 import { resolve } from 'path';
 import { getItemsCtrl } from './controllers/get-items.controller';
+import { deleteItemCtrl } from './controllers/delete-item.controller';
 
 Task.all([
 	createServer(),
@@ -20,6 +21,7 @@ Task.all([
 			server.get('/api/ping', pingCtrl);
 			server.post('/api/items', saveNewItemCtrl);
 			server.get('/api/items', getItemsCtrl);
+			server.del('/api/items', deleteItemCtrl);
 
 			// Setting up static server
 			server.get(`/${configs.assets.namespace}/*`, plugins.serveStatic({

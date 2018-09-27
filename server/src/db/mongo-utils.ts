@@ -76,24 +76,39 @@ const mongoFind = <T extends MongoDocument> (criteria: FilterQuery<T>) =>
 		})
 ;
 
-// const mongoFindOne = <T extends MongoDocument> (criteria: FilterQuery<T>) =>
-// 	(collection: Collection<T>) =>
-// 		new Task<T, MongoError | MongoDocumentDoesNotExistError<T>>((resolve, reject) => {
-// 			collection.findOne(criteria, (err, result) => {
-// 				if (err) {
-// 					reject(new MongoError(err));
-// 				}
-// 				else {
-// 					if (result === null) {
-// 						reject(new MongoDocumentDoesNotExistError<T>(criteria));
-// 					}
-// 					else {
-// 						resolve(result);
-// 					}
-// 				}
-// 			});
-// 		})
-// ;
+const mongoDelete = <T extends MongoDocument> (criteria: FilterQuery<T>) =>
+	(collection: Collection<T>) =>
+		new Task<void, MongoError>((resolve, reject) => {
+			collection
+				.deleteOne(criteria, err => {
+					if (err) {
+						reject(new MongoError(err));
+					}
+					else {
+						resolve(undefined);
+					}
+				})
+		})
+;
+
+const mongoFindOne = <T extends MongoDocument> (criteria: FilterQuery<T>) =>
+	(collection: Collection<T>) =>
+		new Task<T, MongoError | MongoDocumentDoesNotExistError<T>>((resolve, reject) => {
+			collection.findOne(criteria, (err, result) => {
+				if (err) {
+					reject(new MongoError(err));
+				}
+				else {
+					if (result === null) {
+						reject(new MongoDocumentDoesNotExistError<T>(criteria));
+					}
+					else {
+						resolve(result);
+					}
+				}
+			});
+		})
+;
 
 // // Note I didn't implement the $unset and $rename update operators since I'm not using them
 // interface MongoUpdate <T> {
@@ -133,13 +148,13 @@ export class MongoInsertError extends Error {
 	}
 }
 
-// export class MongoDocumentDoesNotExistError <T> extends Error {
-// 	MongoDocumentDoesNotExist = 'MongoDocumentDoesNotExist';
+export class MongoDocumentDoesNotExistError <T> extends Error {
+	MongoDocumentDoesNotExist = 'MongoDocumentDoesNotExist';
 
-// 	constructor (public criteria: FilterQuery<T>) {
-// 		super('MongoDocument not found');
-// 	}
-// }
+	constructor (public criteria: FilterQuery<T>) {
+		super('MongoDocument not found');
+	}
+}
 
 export const getAllDocuments = <T extends MongoDocument> (collectionName: string) =>
 	() =>
@@ -155,12 +170,19 @@ export const insertOneDocument = <T extends MongoDocument> (collectionName: stri
 			.chain(mongoInsertOne<T>(document))
 ;
 
-// export const findOneDocument = <T extends MongoDocument> (collectionName: string) =>
-// 	(criteria: FilterQuery<T>) =>
-// 		dbCnx
-// 			.map(db => db.collection(collectionName))
-// 			.chain(mongoFindOne(criteria))
-// ;
+export const deleteDocument = <T extends MongoDocument> (collectionName: string) =>
+	(id: MongoDocumentId) =>
+		dbCnx
+			.map(db => db.collection(collectionName))
+			.chain(mongoDelete<T>({_id: id}))
+;
+
+export const findOneDocument = <T extends MongoDocument> (collectionName: string) =>
+	(criteria: FilterQuery<T>) =>
+		dbCnx
+			.map(db => db.collection(collectionName))
+			.chain(mongoFindOne(criteria))
+;
 
 // export const updateOneDocument = <T extends MongoDocument> (collectionName: string) =>
 // 	(criteria: FilterQuery<T>, update: MongoUpdate<T>) =>
