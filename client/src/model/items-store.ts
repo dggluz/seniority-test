@@ -4,6 +4,7 @@ import { EmptySuperClass } from '../utils/empty-super-class';
 import { remove } from '../utils/remove';
 import { Task } from '@ts-task/task';
 import { ItemData } from '../persistence/item-contract';
+import { tap } from '../utils/tap';
 
 export class ItemsStore extends Observable<{
 	'init': Item[];
@@ -19,7 +20,9 @@ export class ItemsStore extends Observable<{
 		if (itemsData.length) {
 			Task
 				.all(itemsData.map(anItemData =>
-					Item.create(anItemData.description, anItemData.image as any)
+					Item
+						.create(anItemData.description, anItemData.image as any)
+						.map(tap(item => item.setId(anItemData._id)))
 				))
 				.fork(
 					console.error,
