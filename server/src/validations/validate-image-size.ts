@@ -1,5 +1,7 @@
 import { getImageSize } from '../utils/get-image-size';
 import { rejectIf } from '../utils/reject-if';
+import { Task } from '@ts-task/task';
+import { configs } from '../configs';
 
 export class InvalidImageDimensions extends Error {
 	InvalidImageDimensions = 'InvalidImageDimensions';
@@ -13,10 +15,13 @@ export const validateImageSize = (imagePath: string) => {
 	const expectedHeight = 320;
 	const expectedWidth = 320;
 
-	return getImageSize(imagePath)
+	return Task.all([
+		getImageSize(imagePath),
+		configs
+	])
 		.chain(rejectIf(
-			dimensions =>
-				dimensions.height !== expectedHeight || dimensions.width !== expectedWidth,
+			([actualDimensions, { imageSize }]) =>
+				actualDimensions.height !== imageSize.height || actualDimensions.width !== imageSize.width,
 			new InvalidImageDimensions(expectedHeight, expectedWidth)
 		));
 };

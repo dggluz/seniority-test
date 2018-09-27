@@ -4,5 +4,9 @@
 	},
 	"static": {
 		"namespace": "static"
+	},
+	"imageSize": {
+		"height": 320,
+		"width": 320
 	}
 }

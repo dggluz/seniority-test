@@ -14,6 +14,10 @@ const configsContract = strictObjOf({
 	}),
 	static: strictObjOf({
 		namespace: str
+	}),
+	imageSize: strictObjOf({
+		height: num,
+		width: num
 	})
 });
 
