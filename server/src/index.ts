@@ -7,6 +7,7 @@ import { plugins } from 'restify';
 import { resolve } from 'path';
 import { getItemsCtrl } from './controllers/get-items.controller';
 import { deleteItemCtrl } from './controllers/delete-item.controller';
+import { updateItemDescriptionCtrl } from './controllers/update-item-description.controller';
 
 Task.all([
 	createServer(),
@@ -22,6 +23,7 @@ Task.all([
 			server.post('/api/items', saveNewItemCtrl);
 			server.get('/api/items', getItemsCtrl);
 			server.del('/api/items', deleteItemCtrl);
+			server.patch('/api/items/:itemId/description', updateItemDescriptionCtrl);
 
 			// Setting up static server
 			server.get(`/${configs.assets.namespace}/*`, plugins.serveStatic({
