@@ -10,6 +10,12 @@ export class ItemsStore extends Observable<{
 }>().from(EmptySuperClass) {
 	_items: Item[] = [];
 
+	// TODO: improve typings
+	init (items: any) {
+		console.log(items);
+		return this;
+	}
+
 	addItem (item: Item) {
 		this._items.push(item);
 		this._notifyObservers('new-item', item);
