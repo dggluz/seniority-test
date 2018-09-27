@@ -15,7 +15,11 @@ export class NewItemFormComponent extends Component {
 			.appendTo(this.$dom.find('.image-file-selector-wrapper'))
 		;
 
-		this._description = new TextboxComponent()
+		this._description = new TextboxComponent({
+			placeholder: 'Description...',
+			description: 'The description for your item',
+			label: 'Description'
+		})
 			.appendTo(this.$dom.find('.description-wrapper'))
 		;
 	}

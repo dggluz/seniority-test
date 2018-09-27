@@ -1,32 +1,80 @@
 import { generate } from 'shortid';
 import { Component } from '../component';
 
+export interface TextboxComponentOptions {
+	label?: string;
+	placeholder?: string;
+	description?: string;
+}
+
 export class TextboxComponent extends Component {
 	private _id = generate();
 
-	constructor () {
+	constructor (options: TextboxComponentOptions) {
 		super(require('./textbox.component.html'));
 
-		this._getInput()
+		this.$getInput()
 			.attr({
 				id: this._getId(),
 				'aria-describedby': this._getAriaDescription()
-			});
-		this.$dom.find('small').attr('id', this._getAriaDescription());
-		this.$dom.find('label').attr('for', this._getId());
+			})
+		;
+
+		this
+			.$getLongDescription()
+			.attr({
+				id: this._getAriaDescription()
+			})
+		;
+
+		this
+			.$getLabel()
+			.attr({
+				'for': this._getId()
+			})
+		;
+
+		this
+			.setPlaceholder(options.placeholder || '')
+			.setLabel(options.label || '')
+			.setDescription(options.description || '')
+		;
 	}
 
 	getValue () {
-		return this._getInput().val() as string;
+		return this.$getInput().val() as string;
 	}
 
 	setValue (value: string) {
-		this._getInput().val(value);
+		this.$getInput().val(value);
 		return this;
 	}
 
-	private _getInput () {
+	setPlaceholder (placeholder: string) {
+		this.$getInput().attr('placeholder', placeholder);
+		return this;
+	}
+
+	setLabel (label: string) {
+		this.$getLabel().text(label);
+		return this;
+	}
+
+	setDescription (description: string) {
+		this.$getLongDescription().text(description);
+		return this;
+	}
+
+	private $getInput () {
 		return this.$dom.find('input');
+	}
+
+	private $getLabel () {
+		return this.$dom.find('label');
+	}
+
+	private $getLongDescription () {
+		return this.$dom.find('small');
 	}
 
 	private _getId () {
