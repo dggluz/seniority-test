@@ -21,6 +21,7 @@
   "devDependencies": {
     "@types/jest": "^23.3.2",
     "@types/jquery": "^3.3.9",
+    "@types/shortid": "0.0.29",
     "css-loader": "^1.0.0",
     "dtslint": "^0.3.0",
     "file-loader": "^2.0.0",
@@ -37,6 +38,7 @@
   },
   "dependencies": {
     "@ts-task/task": "^1.0.0",
-    "@ts-task/utils": "0.0.1"
+    "@ts-task/utils": "0.0.1",
+    "shortid": "^2.2.13"
   }
 }
