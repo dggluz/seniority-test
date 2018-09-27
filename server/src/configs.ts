@@ -12,8 +12,9 @@ const configsContract = strictObjOf({
 	server: strictObjOf({
 		port: num
 	}),
-	static: strictObjOf({
-		namespace: str
+	assets: strictObjOf({
+		namespace: str,
+		imagesDir: str
 	}),
 	imageSize: strictObjOf({
 		height: num,

@@ -22,8 +22,8 @@ Task.all([
 			server.get('/api/items', getItemsCtrl);
 
 			// Setting up static server
-			server.get(`/${configs.static.namespace}/*`, plugins.serveStatic({
-				directory: resolve(process.cwd(), `./${configs.static.namespace}/../`),
+			server.get(`/${configs.assets.namespace}/*`, plugins.serveStatic({
+				directory: resolve(process.cwd(), `./${configs.assets.namespace}/../`),
 				default: 'index.html'
 			}));
 		}

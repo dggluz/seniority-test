@@ -2,8 +2,9 @@
 	"server": {
 		"port": 8080
 	},
-	"static": {
-		"namespace": "static"
+	"assets": {
+		"namespace": "static",
+		"imagesDir": "images"
 	},
 	"imageSize": {
 		"height": 320,
