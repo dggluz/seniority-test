@@ -1,6 +1,6 @@
 import { Task } from '@ts-task/task';
 import { share, isInstanceOf } from '@ts-task/utils';
-import { MongoClient, MongoError as _MongoError, Collection, ObjectId, FilterQuery } from 'mongodb';
+import { MongoClient, MongoError as _MongoError, Collection, ObjectId, FilterQuery, UpdateWriteOpResult } from 'mongodb';
 import { Omit } from 'type-zoo/types';
 import { dbSecrets } from '../secrets';
 
@@ -110,26 +110,24 @@ const mongoFindOne = <T extends MongoDocument> (criteria: FilterQuery<T>) =>
 		})
 ;
 
-// // Note I didn't implement the $unset and $rename update operators since I'm not using them
-// interface MongoUpdate <T> {
-// 	$set?: Partial<T>;
-// 	// TODO: improve typings
-// 	$addToSet?: any;
-// }
+// Note I didn't implement the $unset and $rename update operators since I'm not using them
+interface MongoUpdate <T> {
+	$set?: Partial<T>;
+}
 
-// const mongoUpdateOne = <T extends MongoDocument> (criteria: FilterQuery<T>, update: MongoUpdate<T>) =>
-// 	(collection: Collection<T>) =>
-// 		new Task<UpdateWriteOpResult, MongoError>((resolve, reject) => {
-// 			collection.updateOne(criteria, update, (err, result) => {
-// 				if (err) {
-// 					reject(new MongoError(err));
-// 				}
-// 				else {
-// 					resolve(result);
-// 				}
-// 			})
-// 		})
-// ;
+const mongoUpdateOne = <T extends MongoDocument> (criteria: FilterQuery<T>, update: MongoUpdate<T>) =>
+	(collection: Collection<T>) =>
+		new Task<UpdateWriteOpResult, MongoError>((resolve, reject) => {
+			collection.updateOne(criteria, update, (err, result) => {
+				if (err) {
+					reject(new MongoError(err));
+				}
+				else {
+					resolve(result);
+				}
+			})
+		})
+;
 
 const dbCnx = dbSecrets
 	.chain(({db}) =>
@@ -184,11 +182,11 @@ export const findOneDocument = <T extends MongoDocument> (collectionName: string
 			.chain(mongoFindOne(criteria))
 ;
 
-// export const updateOneDocument = <T extends MongoDocument> (collectionName: string) =>
-// 	(criteria: FilterQuery<T>, update: MongoUpdate<T>) =>
-// 		dbCnx
-// 			.map(db => db.collection(collectionName))
-// 			.chain(mongoUpdateOne(criteria, update))
-// ;
+export const updateOneDocument = <T extends MongoDocument> (collectionName: string) =>
+	(criteria: FilterQuery<T>, update: MongoUpdate<T>) =>
+		dbCnx
+			.map(db => db.collection(collectionName))
+			.chain(mongoUpdateOne(criteria, update))
+;
 
 export const isMongoError = isInstanceOf(MongoError, MongoInsertError);
