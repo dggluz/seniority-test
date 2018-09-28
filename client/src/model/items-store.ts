@@ -15,7 +15,7 @@ export class ItemsStore extends Observable<{
 	_items: Item[] = [];
 
 	init (itemsData: ItemData[]) {
-		// TODO: remove "if" when Task.all is fixed for empty arrays
+		// Remove "if" when Task.all is fixed for empty arrays
 		if (itemsData.length) {
 			Task
 				.all(itemsData.map(anItemData =>

@@ -3,7 +3,7 @@ import { Item } from '../../model/item';
 import { TextboxComponent } from '../textbox/textbox.component';
 import { noop } from '../../utils/noop';
 import { as } from '../../utils/as';
-import { isImageFile } from '../../utils/is-image-file';
+import { validateOrReportSingleImageFile } from '../../utils/validate-or-report-single-image-file';
 
 require('./item.component.less');
 
@@ -67,20 +67,9 @@ export class ItemComponent extends Component {
 		this.$dom.find('.image-selector').change(e => {
 			e.preventDefault();
 			const files = as(HTMLInputElement)(this.$dom.find('.image-selector')).files;
-			if (files) {
-				// TODO: report error
-				if (files.length !== 1) {
-					console.error('Drop only one file');
-					return;
-				}
-
-				// TODO: report error
-				if (!isImageFile(files[0])) {
-					console.error('Image files accepted only');
-					return;
-				}
-
-				this._model.setImage(files[0])
+			const image = files && validateOrReportSingleImageFile(files);
+			if (image) {
+				this._model.setImage(image)
 					// TODO: improve this
 					// TODO: exit description edition mode on succes??
 					.fork(console.error, noop)

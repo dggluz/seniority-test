@@ -3,6 +3,7 @@ import { FileSelector } from '../../utils/file-selector.mixin';
 import { isImageFile } from '../../utils/is-image-file';
 import { as } from '../../utils/as';
 import { toArray } from '../../utils/to-array';
+import { validateOrReportSingleImageFile } from '../../utils/validate-or-report-single-image-file';
 
 require('./file-drop-area.component.less');
 
@@ -19,12 +20,6 @@ const getFilesRepresentation = (e: DragEvent): FileRepresentation[] => {
 
 const hasSingleImageFile = (files: FileRepresentation[]) =>
 	files.length === 1 && isImageFile(files[0])
-;
-
-const getFile = (fileRepresentation: File | DataTransferItem) =>
-	fileRepresentation instanceof File ?
-		fileRepresentation :
-		(fileRepresentation.getAsFile())
 ;
 
 const asDragEvent = as(DragEvent);
@@ -51,22 +46,16 @@ export class FileDropAreaComponent extends FileSelector(Component) {
 			)
 			.on('dragleave dragend drop', _ => this._resetFileDropArea())
 			.on('drop', e => {
-				const files = getFilesRepresentation(asDragEvent(e.originalEvent));
+				const image = validateOrReportSingleImageFile(
+					getFilesRepresentation(
+						asDragEvent(e.originalEvent)
+					)
+				);
 
-				// TODO: report error
-				if (files.length !== 1) {
-					console.error('Drop only one file');
-					return;
+				if (image) {
+					this.setFile(image);
+					this._triggerFileCallbacks();
 				}
-
-				// TODO: report error
-				if (!isImageFile(files[0])) {
-					console.error('Image files accepted only');
-					return;
-				}
-
-				this.setFile(getFile(files[0]));
-				this._triggerFileCallbacks();
 			})
 		;
 
