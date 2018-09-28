@@ -60,3 +60,10 @@ export const mongoIdLike = (mongoId: string | ObjectId) => {
 		)}" value)`
 	);
 };
+
+export const numberLike = (value: number | string) => {
+	if (isNaN(value as any)) {
+		throw new TypeLikeError(`"${value} can not be converted to number"`);
+	}
+	return Number(value);
+};

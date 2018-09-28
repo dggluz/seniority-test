@@ -1,7 +1,7 @@
 import { Task } from '@ts-task/task';
 import { createEndpoint } from '../server-utils/create-endpoint';
 import { checkBody } from '../middlewares/check-body.middleware';
-import { strictObjOf, str } from 'parmenides';
+import { str } from 'parmenides';
 import { checkFiles } from '../middlewares/check-files.middleware';
 import { caseError, isInstanceOf } from '@ts-task/utils';
 import { asUnknownError } from '@ts-task/task/dist/lib/src/operators';
@@ -15,6 +15,7 @@ import { validateImageSize, InvalidImageDimensions } from '../validations/valida
 import { ImageSizeError } from '../utils/get-image-size';
 import { saveNewItem } from '../db/save-new-item';
 import { getItemWithImageUrl } from '../utils/get-item-with-image-url';
+import { numberLike, objectOfLike } from '../utils/type-like';
 
 /**
  * Endpoint that saves items to DB.
@@ -24,8 +25,9 @@ export const saveNewItemCtrl = createEndpoint(req =>
 		.resolve(req)
 
 		// Check that we have a description
-		.chain(checkBody(strictObjOf({
-			description: str
+		.chain(checkBody(objectOfLike({
+			description: str,
+			order: numberLike
 		})))
 
 		// Check that we have an image file
@@ -44,7 +46,8 @@ export const saveNewItemCtrl = createEndpoint(req =>
 				// Save item to DB
 				.chain(imageName => saveNewItem({
 					description: req.body.description,
-					image: imageName
+					image: imageName,
+					order: req.body.order
 				}))
 				.chain(getItemWithImageUrl)
 		)
