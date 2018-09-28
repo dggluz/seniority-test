@@ -16,7 +16,7 @@ export const FileSelector = <T extends ClassType<any>> (Base: T) =>
 			return this._file;
 		}
 
-		protected setFile (file: File) {
+		protected setFile (file: File | null) {
 			this._file = file;
 			return this;
 		}

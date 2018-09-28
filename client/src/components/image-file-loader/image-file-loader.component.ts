@@ -11,12 +11,10 @@ export class ImageFileLoaderComponent extends FileSelector(Component) {
 		super(require('./image-file-loader.component.html'));
 
 		this._fileButton = new FileButtonComponent()
-			.configureAcceptedType('image/*')
 			.onNewFile(_file => this._triggerFileCallbacks())
 			.appendTo(this.$dom.find('.file-button-wrapper'))
 		;
 		this._fileDropArea = new FileDropAreaComponent()
-			.configureAcceptedType('image/*')
 			.onNewFile(_file => this._triggerFileCallbacks())
 			.appendTo(this.$dom.find('.file-drop-area-wrapper'))
 		;

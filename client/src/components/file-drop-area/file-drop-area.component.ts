@@ -29,18 +29,19 @@ const isImageFile = (file: FileRepresentation) =>
 const getFile = (fileRepresentation: File | DataTransferItem) =>
 	fileRepresentation instanceof File ?
 		fileRepresentation :
-		(fileRepresentation.getAsFile() as File)
+		(fileRepresentation.getAsFile())
 ;
 
-// TODO: different styles for invalid drags
+const asDragEvent = (event: Event) => {
+	if (event instanceof DragEvent) {
+		return event;
+	}
+	throw new TypeError(`Expected event "${event}" to be a DragEvent`);
+}
+
 export class FileDropAreaComponent extends FileSelector(Component) {
 	constructor () {
 		super(require('./file-drop-area.component.html'));
-	}
-
-	configureAcceptedType (_acceptedType: string) {
-		// TODO: view if it's possible to accept only certain file types
-		return this;
 	}
 
 	restart () {
@@ -55,10 +56,12 @@ export class FileDropAreaComponent extends FileSelector(Component) {
 				e.preventDefault();
 				e.stopPropagation();
 			})
-			.on('dragover dragenter', e => this._setDraggingStylesOnFileDropArea(e.originalEvent as DragEvent))
+			.on('dragover dragenter', e =>
+				this._setDraggingStylesOnFileDropArea(asDragEvent(e.originalEvent))
+			)
 			.on('dragleave dragend drop', _ => this._resetFileDropArea())
 			.on('drop', e => {
-				const files = getFilesRepresentation(e.originalEvent as DragEvent);
+				const files = getFilesRepresentation(asDragEvent(e.originalEvent));
 
 				if (files.length !== 1) {
 					console.error('Drop only one file');

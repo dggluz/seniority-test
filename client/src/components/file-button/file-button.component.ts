@@ -9,11 +9,6 @@ export class FileButtonComponent extends FileSelector(Component) {
 		super(require('./file-button.component.html'));
 	}
 
-	configureAcceptedType (acceptedType: string) {
-		this._getInputFile().attr('accept', acceptedType);
-		return this;
-	}
-
 	restart () {
 		this._getInputFile().val('');
 		return this;
