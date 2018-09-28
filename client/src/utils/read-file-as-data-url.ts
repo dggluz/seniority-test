@@ -1,5 +1,6 @@
 import { Task } from '@ts-task/task';
-import { getEventTargetProp } from './get-event-target-prop';
+import { str } from 'parmenides';
+import { ensure } from './ensure';
 
 export class FileReadError extends Error {
 	FileReadError = 'FileReadError';
@@ -13,8 +14,8 @@ export const readFileAsDataUrl = (file: File) =>
 	new Task<string, FileReadError>((resolve, reject) => {
 		var reader = new FileReader();
 
-		reader.onload = e => {
-			const dataURLImage = getEventTargetProp(e, 'result');
+		reader.onload = _ => {
+			const dataURLImage = ensure(str)(reader.result);
 			if (dataURLImage) {
 				resolve(dataURLImage);
 			}

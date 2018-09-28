@@ -1,11 +1,10 @@
 import { Component } from '../component';
 import { FileSelector } from '../../utils/file-selector.mixin';
+import { isImageFile } from '../../utils/is-image-file';
+import { as } from '../../utils/as';
+import { toArray } from '../../utils/to-array';
 
 require('./file-drop-area.component.less');
-
-const toArray = <T> (arrayLike: ArrayLike<T>): T[] =>
-	[].slice.call(arrayLike)
-;
 
 type FileRepresentation = File | DataTransferItem;
 
@@ -22,22 +21,13 @@ const hasSingleImageFile = (files: FileRepresentation[]) =>
 	files.length === 1 && isImageFile(files[0])
 ;
 
-const isImageFile = (file: FileRepresentation) =>
-	/^image\/.+$/.test(file.type)
-;
-
 const getFile = (fileRepresentation: File | DataTransferItem) =>
 	fileRepresentation instanceof File ?
 		fileRepresentation :
 		(fileRepresentation.getAsFile())
 ;
 
-const asDragEvent = (event: Event) => {
-	if (event instanceof DragEvent) {
-		return event;
-	}
-	throw new TypeError(`Expected event "${event}" to be a DragEvent`);
-}
+const asDragEvent = as(DragEvent);
 
 export class FileDropAreaComponent extends FileSelector(Component) {
 	constructor () {
@@ -63,17 +53,17 @@ export class FileDropAreaComponent extends FileSelector(Component) {
 			.on('drop', e => {
 				const files = getFilesRepresentation(asDragEvent(e.originalEvent));
 
+				// TODO: report error
 				if (files.length !== 1) {
 					console.error('Drop only one file');
 					return;
 				}
 
+				// TODO: report error
 				if (!isImageFile(files[0])) {
 					console.error('Image files accepted only');
 					return;
 				}
-
-				// TODO: extra validations (like image size)
 
 				this.setFile(getFile(files[0]));
 				this._triggerFileCallbacks();
