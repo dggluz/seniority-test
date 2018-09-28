@@ -1,6 +1,9 @@
 import { Component } from '../component';
 import { ItemComponent } from '../item/item.component';
 import { itemsStore } from '../../model/model';
+import Sortable = require('sortablejs');
+
+require('./items-wrapper.component.less');
 
 export class ItemsWrapperComponent extends Component {
 	constructor () {
@@ -20,6 +23,10 @@ export class ItemsWrapperComponent extends Component {
 						.appendTo(fragment);
 				})
 				this.$dom.empty().append(fragment);
+
+				Sortable.create(this.$dom.get(0), {
+					ghostClass: 'sortable-ghost'
+				});
 			})
 		;
 	}
