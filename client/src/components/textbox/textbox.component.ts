@@ -91,7 +91,7 @@ export class TextboxComponent extends Component {
 	}
 
 	focus () {
-		this.$getInput().focus();
+		setTimeout(() => this.$getInput().focus(), 1000);
 		return this;
 	}
 

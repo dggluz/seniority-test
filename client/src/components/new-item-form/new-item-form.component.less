@@ -14,25 +14,25 @@ x-new-item-form {
 		overflow: hidden;
 		height: 402px;
 
-		&.show-first {
-			.first-step-wrapper {
-				transform: translateX(0%);
-			}
+		.first-step-wrapper {
+			transform: translateX(0%);
+		}
 
-			.second-step-wrapper {
-				transform: translateX(100%);
-			}
+		.second-step-wrapper {
+			transform: translateX(100%);
 		}
 
 		&.show-second {
 			.first-step-wrapper {
-				transition: transform .6s ease;
 				transform: translateX(-100%);
 			}
-
+			
 			.second-step-wrapper {
-				transition: transform .6s ease;
 				transform: translateX(0%);
+			}
+
+			.first-step-wrapper, .second-step-wrapper {
+				transition: transform .9s ease;
 			}
 		}
 	}

@@ -57,13 +57,13 @@ export class NewItemFormComponent extends Component {
 	}
 
 	private _showFirstStep () {
-		this.$dom.find('.steps-wrapper').removeClass('show-second').addClass('show-first');
+		this.$dom.find('.steps-wrapper').removeClass('show-second');
 		return this;
 	}
 	
 	private _showSecondStep (imageUrl: string) {
 		this._secondStep.init(imageUrl);
-		this.$dom.find('.steps-wrapper').removeClass('show-first').addClass('show-second');
+		this.$dom.find('.steps-wrapper').addClass('show-second');
 		return this;
 	}
 }
