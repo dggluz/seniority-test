@@ -69,8 +69,6 @@ export class ItemsStore extends Observable<{
 	}
 
 	sortItem (originalIndex: number, newIndex: number) {
-		console.log('originalIndex', originalIndex);
-		console.log('newIndex', newIndex);
 		const items = this.getItems();
 		const itemToMove = items[originalIndex];
 
