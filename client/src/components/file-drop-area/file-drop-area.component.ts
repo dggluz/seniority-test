@@ -3,6 +3,35 @@ import { FileSelector } from '../../utils/file-selector.mixin';
 
 require('./file-drop-area.component.less');
 
+const toArray = <T> (arrayLike: ArrayLike<T>): T[] =>
+	[].slice.call(arrayLike)
+;
+
+type FileRepresentation = File | DataTransferItem;
+
+const getFilesRepresentation = (e: DragEvent): FileRepresentation[] => {
+	if (e.dataTransfer.items) {
+		return toArray(e.dataTransfer.items)
+			.filter(item => item.kind === 'file')
+		;
+	}
+	return toArray(e.dataTransfer.files);
+};
+
+const hasSingleImageFile = (files: FileRepresentation[]) =>
+	files.length === 1 && isImageFile(files[0])
+;
+
+const isImageFile = (file: FileRepresentation) =>
+	/^image\/.+$/.test(file.type)
+;
+
+const getFile = (fileRepresentation: File | DataTransferItem) =>
+	fileRepresentation instanceof File ?
+		fileRepresentation :
+		(fileRepresentation.getAsFile() as File)
+;
+
 // TODO: different styles for invalid drags
 export class FileDropAreaComponent extends FileSelector(Component) {
 	constructor () {
@@ -15,47 +44,57 @@ export class FileDropAreaComponent extends FileSelector(Component) {
 	}
 
 	restart () {
-		resetFileDropArea(this.$dom);
+		this._resetFileDropArea();
 		return this;
 	}
 
 	protected _setHandlers () {
-		resetFileDropArea(this.$dom);
+		this._resetFileDropArea();
 		this.$dom
 			.on('drag dragstart dragend dragover dragenter dragleave drop', e => {
 				e.preventDefault();
 				e.stopPropagation();
 			})
-			.on('dragover dragenter', _ => setDraggingStylesOnFileDropArea(this.$dom))
-			.on('dragleave dragend drop', _ => resetFileDropArea(this.$dom))
+			.on('dragover dragenter', e => this._setDraggingStylesOnFileDropArea(e.originalEvent as DragEvent))
+			.on('dragleave dragend drop', _ => this._resetFileDropArea())
 			.on('drop', e => {
-				console.log(e);
+				const files = getFilesRepresentation(e.originalEvent as DragEvent);
 
-				// TODO: validate that what was dropped is a file
-				// TODO: validate there's only one file
-				// TODO: validate file permissions
-				// TODO: validate file type
+				if (files.length !== 1) {
+					console.error('Drop only one file');
+					return;
+				}
+
+				if (!isImageFile(files[0])) {
+					console.error('Image files accepted only');
+					return;
+				}
+
 				// TODO: extra validations (like image size)
-				// TODO: trigger event handlers
 
-				console.log('file dropped!');
+				this.setFile(getFile(files[0]));
+				this._triggerFileCallbacks();
 			})
 		;
 
 		return this;
 	}
+
+	private _resetFileDropArea () {
+		this.$dom
+			.removeClass('border-primary text-primary border-danger text-danger')
+			.addClass('border-secondary')
+		;
+	}
+
+	private _setDraggingStylesOnFileDropArea (event: DragEvent) {
+		this.$dom
+			.addClass(
+				hasSingleImageFile(getFilesRepresentation(event)) ?
+					'border-primary text-primary' :
+					'border-danger text-danger'
+			)
+			.removeClass('border-secondary')
+		;
+	}
 }
-
-const resetFileDropArea = ($fileDropArea: JQuery<HTMLElement>) => {
-	$fileDropArea
-		.removeClass('border-primary text-primary')
-		.addClass('border-secondary')
-	;
-};
-
-const setDraggingStylesOnFileDropArea = ($fileDropArea: JQuery<HTMLElement>) => {
-	$fileDropArea
-		.addClass('border-primary text-primary')
-		.removeClass('border-secondary')
-	;
-};

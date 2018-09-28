@@ -1,4 +1,15 @@
 x-file-drop-area {
 	border-style: dashed;
 	border-width: 1px;
+	position:relative;
+	
+	// Background icon (open box)
+	&:before {
+		color: gray;
+		content: "\f49e";
+		font-family: FontAwesome;
+		left: -5px;
+		position: absolute;
+		top: 0;
+	}
 }
