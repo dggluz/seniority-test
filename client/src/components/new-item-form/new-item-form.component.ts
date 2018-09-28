@@ -5,6 +5,8 @@ import { readFileAsDataUrl } from '../../utils/read-file-as-data-url';
 import { NewItemFormFirstStepComponent } from './first-step/new-item-form-first-step.component';
 import { NewItemFormSecondStepComponent } from './second-step/new-items-form-second-step.component';
 
+require('./new-item-form.component.less');
+
 export class NewItemFormComponent extends Component {
 	private _firstStep: NewItemFormFirstStepComponent;
 	private _secondStep: NewItemFormSecondStepComponent;
