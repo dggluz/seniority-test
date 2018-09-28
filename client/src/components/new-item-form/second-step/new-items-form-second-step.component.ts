@@ -22,7 +22,8 @@ export class NewItemFormSecondStepComponent extends Component {
 	}
 	
 	init (imageUrl: string) {
-		this.$dom.find('.image-preview img').attr('src', imageUrl);
+		this.$dom.find('.image-preview img').attr('src', imageUrl)
+		this._description.focus();
 		return this;
 	}
 	

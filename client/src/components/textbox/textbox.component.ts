@@ -90,6 +90,11 @@ export class TextboxComponent extends Component {
 		return this;
 	}
 
+	focus () {
+		this.$getInput().focus();
+		return this;
+	}
+
 	private $getInput () {
 		return this.$dom.find('input') as JQuery<HTMLInputElement>;
 	}
