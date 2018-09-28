@@ -14,7 +14,6 @@ export class ItemsStore extends Observable<{
 }>().from(EmptySuperClass) {
 	_items: Item[] = [];
 
-	// TODO: improve typings
 	init (itemsData: ItemData[]) {
 		// TODO: remove "if" when Task.all is fixed for empty arrays
 		if (itemsData.length) {
@@ -36,7 +35,6 @@ export class ItemsStore extends Observable<{
 		else {
 			this._notifyObservers('init', this.getItems());
 		}
-		console.log(itemsData);
 		return this;
 	}
 
@@ -59,11 +57,50 @@ export class ItemsStore extends Observable<{
 	}
 
 	getItems() {
-		return this._items;
+		return this._items
+			.sort((anItem, anotherItem) =>
+				anItem.getOrder() - anotherItem.getOrder()
+			)
+		;
 	}
 
 	getItemsQty () {
 		return this.getItems().length;
+	}
+
+	sortItem (originalIndex: number, newIndex: number) {
+		console.log('originalIndex', originalIndex);
+		console.log('newIndex', newIndex);
+		const items = this.getItems();
+		const itemToMove = items[originalIndex];
+
+		// If it has not really been move, do nothing
+		if (originalIndex === newIndex) {
+			return this;
+		}
+
+		if (originalIndex > newIndex) {
+			const newFollowingItem = items[newIndex];
+			const newPreviousItem = items[newIndex - 1];
+			if (!newPreviousItem) {
+				itemToMove.setOrder(newFollowingItem.getOrder() - 1);
+			}
+			else {
+				itemToMove.setOrder((newPreviousItem.getOrder() + newFollowingItem.getOrder()) * 0.5);
+			}
+		}
+		else {
+			const newPreviousItem = items[newIndex];
+			const newFollowingItem = items[newIndex + 1];
+			if (!newFollowingItem) {
+				itemToMove.setOrder(newPreviousItem.getOrder() + 1);
+			}
+			else {
+				itemToMove.setOrder((newPreviousItem.getOrder() + newFollowingItem.getOrder()) * 0.5);
+			}
+		}
+
+		return this;
 	}
 
 	private _getLastItem (): Item | undefined {
@@ -77,5 +114,5 @@ export class ItemsStore extends Observable<{
 		}
 		return 0;
 	}
-}
 
+}

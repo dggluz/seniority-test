@@ -5,6 +5,11 @@ import Sortable = require('sortablejs');
 
 require('./items-wrapper.component.less');
 
+interface SortableEvent {
+	newIndex: number;
+	oldIndex: number;
+}
+
 export class ItemsWrapperComponent extends Component {
 	constructor () {
 		super(require('./items-wrapper.component.html'));
@@ -25,7 +30,10 @@ export class ItemsWrapperComponent extends Component {
 				this.$dom.empty().append(fragment);
 
 				Sortable.create(this.$dom.get(0), {
-					ghostClass: 'sortable-ghost'
+					ghostClass: 'sortable-ghost',
+					onEnd: (event: SortableEvent) => {
+						itemsStore.sortItem(event.oldIndex, event.newIndex);
+					}
 				});
 			})
 		;

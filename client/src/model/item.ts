@@ -30,6 +30,7 @@ export class ItemWithoutIdError extends Error {
 
 export class Item extends Observable<{
 	description: string;
+	order: number;
 	image: string;
 	delete: Item;
 }>().from(EmptySuperClass) {
@@ -108,6 +109,7 @@ export class Item extends Observable<{
 
 	setOrder (order: number) {
 		this._order = order;
+		this._notifyObservers('order', this.getOrder());
 		return this;
 	}
 

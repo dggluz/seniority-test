@@ -4,14 +4,14 @@ import { apiDomain } from './api-domain';
 import { validateServerResponse } from './validate-server-response';
 import { itemContract } from './item-contract';
 
-export const saveItemDescription = (item: Item) =>
+export const saveItemOrder = (item: Item) =>
 	item.getId()
 		.chain(itemId =>
 			xhrTask({
-				url: `${apiDomain}/items/${itemId}/description`,
+				url: `${apiDomain}/items/${itemId}/order`,
 				method: 'PATCH',
 				data: {
-					description: item.getDescription()
+					order: item.getOrder()
 				}
 			})
 		)
