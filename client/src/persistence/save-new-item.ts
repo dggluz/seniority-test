@@ -11,6 +11,7 @@ export const saveNewItem = (item: Item) => {
 		.chain(imageFile => {
 			const formData = new FormData();
 			formData.append('description', item.getDescription());
+			formData.append('order', item.getOrder().toString());
 			formData.append('image', imageFile);
 		
 			return xhrTask({

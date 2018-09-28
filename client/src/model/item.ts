@@ -35,6 +35,7 @@ export class Item extends Observable<{
 }>().from(EmptySuperClass) {
 	private _image: ImageWrapper = null as any;
 	private _description: string = '';
+	private _order: number = 0;
 	private _id: Task<string, ItemWithoutIdError> = Task.reject(new ItemWithoutIdError());
 
 	static create (description: string, image: File | null) {
@@ -103,6 +104,15 @@ export class Item extends Observable<{
 
 	getImageAsFile () {
 		return this._image.getAsFile();
+	}
+
+	setOrder (order: number) {
+		this._order = order;
+		return this;
+	}
+
+	getOrder () {
+		return this._order;
 	}
 
 	delete() {

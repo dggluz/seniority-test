@@ -23,6 +23,7 @@ export class ItemsStore extends Observable<{
 					Item
 						.create(anItemData.description, anItemData.image as any)
 						.map(tap(item => item.setId(anItemData._id)))
+						.map(tap(item => item.setOrder(anItemData.order)))
 				))
 				.fork(
 					console.error,
@@ -40,7 +41,11 @@ export class ItemsStore extends Observable<{
 	}
 
 	addItem (item: Item) {
-		this._items.push(item);
+		this._items.push(
+			item
+				.setOrder(this._getLastItemOrder() + 1)
+			)
+		;
 		this._notifyObservers('new-item', item);
 		this._notifyObservers('items-qty', this.getItemsQty());
 		return this;
@@ -59,6 +64,18 @@ export class ItemsStore extends Observable<{
 
 	getItemsQty () {
 		return this.getItems().length;
+	}
+
+	private _getLastItem (): Item | undefined {
+		return this.getItems().slice(-1)[0];
+	}
+
+	private _getLastItemOrder () {
+		const lastItem = this._getLastItem();
+		if (lastItem) {
+			return lastItem.getOrder();
+		}
+		return 0;
 	}
 }
 
