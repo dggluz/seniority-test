@@ -9,6 +9,7 @@ import { getItemsCtrl } from './controllers/get-items.controller';
 import { deleteItemCtrl } from './controllers/delete-item.controller';
 import { updateItemDescriptionCtrl } from './controllers/update-item-description.controller';
 import { updateItemImageCtrl } from './controllers/update-item-image.controller';
+import { updateItemOrderCtrl } from './controllers/update-item-order.controller';
 
 Task.all([
 	createServer(),
@@ -25,6 +26,7 @@ Task.all([
 			server.get('/api/items', getItemsCtrl);
 			server.del('/api/items/:itemId', deleteItemCtrl);
 			server.patch('/api/items/:itemId/description', updateItemDescriptionCtrl);
+			server.patch('/api/items/:itemId/order', updateItemOrderCtrl);
 			server.patch('/api/items/:itemId/image', updateItemImageCtrl);
 
 			// Setting up static server
