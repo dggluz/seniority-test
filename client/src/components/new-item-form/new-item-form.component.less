@@ -1,5 +1,39 @@
 x-new-item-form {
 	.first-step-wrapper, .second-step-wrapper {
 		height: 360px;
+
+		position: absolute;
+		width: 100%;
+		top: 0px;
+		left: 0px;
+		padding: 1.5em;
+	}
+
+	.steps-wrapper {
+		position: relative;
+		overflow: hidden;
+		height: 402px;
+
+		&.show-first {
+			.first-step-wrapper {
+				transform: translateX(0%);
+			}
+
+			.second-step-wrapper {
+				transform: translateX(100%);
+			}
+		}
+
+		&.show-second {
+			.first-step-wrapper {
+				transition: transform .6s ease;
+				transform: translateX(-100%);
+			}
+
+			.second-step-wrapper {
+				transition: transform .6s ease;
+				transform: translateX(0%);
+			}
+		}
 	}
 }

@@ -25,12 +25,6 @@ export class NewItemFormComponent extends Component {
 		this._firstStep;
 	}
 
-	// TODO
-	protected _setHandlers () {
-
-		return this;
-	}
-
 	completeFirstStep (imageFile: File) {
 		// TODO: validate dimensions
 		readFileAsDataUrl(imageFile)
@@ -63,15 +57,13 @@ export class NewItemFormComponent extends Component {
 	}
 
 	private _showFirstStep () {
-		this.$dom.find('.first-step-wrapper').show();
-		this.$dom.find('.second-step-wrapper').hide();
+		this.$dom.find('.steps-wrapper').removeClass('show-second').addClass('show-first');
 		return this;
 	}
-
+	
 	private _showSecondStep (imageUrl: string) {
 		this._secondStep.init(imageUrl);
-		this.$dom.find('.first-step-wrapper').hide();
-		this.$dom.find('.second-step-wrapper').show();
+		this.$dom.find('.steps-wrapper').removeClass('show-first').addClass('show-second');
 		return this;
 	}
 }
