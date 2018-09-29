@@ -20,6 +20,11 @@ Task.all([
 			console.error(err);
 			process.exit(1);
 		}, ([server, configs]) => {
+			// Redirect "/" to static
+			server.get('/', function (_req, res, next) {
+				res.redirect('./static/', next);
+			});
+
 			// Setting up API routes
 			server.get('/api/ping', pingCtrl);
 			server.post('/api/items', saveNewItemCtrl);
