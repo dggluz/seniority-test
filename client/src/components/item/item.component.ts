@@ -63,7 +63,7 @@ export class ItemComponent extends Component {
 
 		this.$dom.find('.image-selector').change(e => {
 			e.preventDefault();
-			const files = as(HTMLInputElement)(this.$dom.find('.image-selector')).files;
+			const files = as(HTMLInputElement)(this.$dom.find('.image-selector').get(0)).files;
 			const image = files && validateOrReportSingleImageFile(files);
 			if (image) {
 				tryOrShowError(() => this._model.setImage(image));
