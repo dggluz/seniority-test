@@ -24,7 +24,7 @@ As the UI is organized in [`Components`](#components), I needed a way to build T
 
 ### Type-safety and error handling
 
-I'm a TypeScript lover and I think it really helps me write more robust code. In that way, I chose a couple of libraries I've been working on:
+I'm a [TypeScript](http://www.typescriptlang.org/) lover and I think it really helps me write more robust code. In that way, I chose a couple of libraries I've been working on:
 
 #### Task
 
@@ -47,7 +47,15 @@ There are also a couple of _functions_ that are not in [`Task/utils`](https://gi
 
 #### Parmenides
 
+[`Parmenides`](https://github.com/dggluz/parmenides) is a library that ensure's in _runtime_ that the _types_ are the expected ones. Suppose you have an _input value_ (a _request_'s result, for instance). TypeScript itself can't infer any type for that value, so **you tell TypeScript that value's _type_**. [`Parmenides`](https://github.com/dggluz/parmenides) just checks in runtime that what you told TypeScript is true, and also types the result.
+
 #### Other type safety functions
+
+There were a couple of situations where the preceding tools were not enough to guarantee type safety, so I developed a couple of _functions_:
+
+* [`as`](https://github.com/dggluz/seniority-test/blob/master/client/src/utils/as.ts): [`JQuery`](https://jquery.com/)'s [_typings_](https://www.npmjs.com/package/@types/jquery) won't tell you that an `Event` is actually a [`DragEvent`](https://developer.mozilla.org/en-US/docs/Web/API/DragEvent), even if you know it _should_ be. In that case I use `as` to _assert_ that it is. I couldn't have used only [`instanceOf`](https://github.com/dggluz/parmenides#instanceof) `Parmenide`'s _function_, since it expects it's parameter to be an _instance_ of the supplied _Constructor_, and an instance of `Event` is not assignable to `DragEvent`.
+
+* [`ensure`](https://github.com/dggluz/seniority-test/blob/master/client/src/utils/ensure.ts): take the [`FileReader`'s _API_](https://developer.mozilla.org/es/docs/Web/API/FileReader#Methods) as an example. The `.result` property could be `string` or `ArrayBuffer` based on which _method_ ([`.readAsArrayBuffer`](https://developer.mozilla.org/es/docs/Web/API/FileReader/readAsArrayBuffer), [`.readAsText`](https://developer.mozilla.org/es/docs/Web/API/FileReader/readAsText) or [`.readAsDataURL`](https://developer.mozilla.org/es/docs/Web/API/FileReader/readAsDataURL)) was called. So, even when _you know_ which type it _should be_ it's good to _ensure_ it is, and that is what `ensure` _function_ does.
 
 ### MVC
 
