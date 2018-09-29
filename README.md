@@ -49,6 +49,9 @@ There are also a couple of _functions_ that are not in [`Task/utils`](https://gi
 
 [`Parmenides`](https://github.com/dggluz/parmenides) is a library that ensure's in _runtime_ that the _types_ are the expected ones. Suppose you have an _input value_ (a _request_'s result, for instance). TypeScript itself can't infer any type for that value, so **you tell TypeScript that value's _type_**. [`Parmenides`](https://github.com/dggluz/parmenides) just checks in runtime that what you told TypeScript is true, and also types the result.
 
+#### A note on TypeScript type checking
+
+TypeScript doesn't have [_nominal typing_](https://en.wikipedia.org/wiki/Nominal_type_system) but [_structural typing_](https://en.wikipedia.org/wiki/Structural_type_system). That imples that if we want to model _errors_ as _types_ it isn't enough to just instance different `Error` _classes_ but it also necessary to make them "_structuraly different_". That is why each `Error` _class_ has a _dummy property_ which is the _class name_ itself.
 
 ### Infra
 
