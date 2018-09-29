@@ -1,5 +1,7 @@
 import { generate } from 'shortid';
 import { Component } from '../component';
+import { ensure } from '../../utils/ensure';
+import { str } from 'parmenides';
 
 export interface TextboxComponentOptions {
 	label?: string;
@@ -52,7 +54,7 @@ export class TextboxComponent extends Component {
 	}
 
 	getValue () {
-		return this.$getInput().val() as string;
+		return ensure(str)(this.$getInput().val());
 	}
 
 	setValue (value: string) {
