@@ -29,11 +29,13 @@ export class ItemsStore extends Observable<{
 					items => {
 						this._items = items;
 						this._notifyObservers('init', this.getItems());
+						this._notifyObservers('items-qty', this.getItemsQty());
 					}
 				);
 		}
 		else {
 			this._notifyObservers('init', this.getItems());
+			this._notifyObservers('items-qty', this.getItemsQty());
 		}
 		return this;
 	}
