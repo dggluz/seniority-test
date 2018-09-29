@@ -37,11 +37,12 @@ export class FileButtonComponent extends FileSelector(Component) {
 			.change(e => {
 				e.preventDefault();
 				const files = as(HTMLInputElement)(this._getInputFile().get(0)).files;
-				const image = files && validateOrReportSingleImageFile(files);
+				const image = files && files.length && validateOrReportSingleImageFile(files);
 
 				if (image) {
 					this.setFile(image);
 					this._triggerFileCallbacks();
+					this.$dom.find('input[type=file]').val('');
 				}
 			});
 		return this;
