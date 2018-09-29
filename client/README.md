@@ -24,7 +24,7 @@ As the UI is organized in [`Components`](#components), I needed a way to build T
 
 ### Type safety and error handling
 
-Adding to the [general type safety and error handling considerations](../#):
+Adding to the [general type safety and error handling considerations](https://github.com/dggluz/seniority-test#type-safety-and-error-handling):
 
 #### Other type safety functions
 
