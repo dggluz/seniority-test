@@ -9,7 +9,7 @@ This is a single page application.
 
 ## Testing
 
-The whole project has little tests as it's a code challenge and I didn't want to delay it too much. Anyway, and as an example, I included tests for a key piece of code: the [`Observable` _mixin_](#Observable).
+The whole project has little tests as it's a code challenge and I didn't want to delay it too much. Anyway, and as an example, I included tests for a key piece of code: the [`Observable` _mixin_](#observable).
 
 There two kind of tests:
 

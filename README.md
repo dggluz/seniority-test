@@ -15,7 +15,7 @@ This project is just a seniority test.
 
 ### Instructions
 
-* Clone the repo (`git@github.com:dggluz/seniority-test.git`)
+* Clone the repo (`git clone git@github.com:dggluz/seniority-test.git`)
 * Move to project directory (`cd seniority-test`)
 * Launch _docker-compose_ (`docker-compose up`) and wait for it to finish
 * [Browse to `http://localhost:8080`](http://localhost:8080)
