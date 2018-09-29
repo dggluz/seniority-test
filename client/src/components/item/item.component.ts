@@ -4,6 +4,7 @@ import { TextboxComponent } from '../textbox/textbox.component';
 import { as } from '../../utils/as';
 import { validateOrReportSingleImageFile } from '../../utils/validate-or-report-single-image-file';
 import { tryOrShowError } from '../../utils/try-or-show-error';
+import { tap } from '../../utils/tap';
 
 require('./item.component.less');
 
@@ -89,6 +90,9 @@ export class ItemComponent extends Component {
 			this
 				.getModel()
 				.getImageAsUrl()
+				.map(tap(imageUrl =>
+					this.$dom.find('.thumbnail').attr('src', imageUrl)
+				))
 		);
 		return this;
 	}
