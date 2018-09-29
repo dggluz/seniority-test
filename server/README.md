@@ -26,13 +26,15 @@ The _returned_ `Task` can only be _rejected_ with [`HTTPErrors`](https://github.
 
 ### createEndpoint
 
-A key of the server is the [`createEndpoint` _function_](https://github.com/dggluz/seniority-test/blob/master/server/src/server-utils/create-endpoint.ts). It takes a [_controller function_](#) and _returns_ a _function_ to be used as callback for [`Server`'s _REST methods_](http://restify.com/docs/server-api/) (as [`get`](http://restify.com/docs/server-api/#get), [`post`](http://restify.com/docs/server-api/#post), [`put`](http://restify.com/docs/server-api/#put), [`patch`](http://restify.com/docs/server-api/#patch) or [`del`](http://restify.com/docs/server-api/#del)).
+A key of the server is the [`createEndpoint` _function_](https://github.com/dggluz/seniority-test/blob/master/server/src/server-utils/create-endpoint.ts). It takes a [_controller function_](#endpoints-controllers) and _returns_ a _function_ to be used as callback for [`Server`'s _REST methods_](http://restify.com/docs/server-api/) (as [`get`](http://restify.com/docs/server-api/#get), [`post`](http://restify.com/docs/server-api/#post), [`put`](http://restify.com/docs/server-api/#put), [`patch`](http://restify.com/docs/server-api/#patch) or [`del`](http://restify.com/docs/server-api/#del)).
 
 It _calls_ the _controller_ and `.fork`s its result, sending the _resolved value_ or the _rejected_ `HTTPError` to the _client_. It ensures by it's typings that the _controller_ doesn't return a `Task` rejected on other thing than an `HttpError` or `UnknownError` (it is an interesting experiment to comment a line like [this one](https://github.com/dggluz/seniority-test/blob/master/server/src/controllers/get-items.controller.ts#L17) to corroborate it).
 
 If another thing is rejected ar runtime, it is _logged_ as en _error_ to the _console_ and an `Internal server error` is sent to the _client_.
 
 ### Middlewares
+
+Another key of the server are the [_middlewares_](https://github.com/dggluz/seniority-test/tree/master/server/src/middlewares). They are functions that make assertions on the [Request](http://restify.com/docs/request-api/) _objects_. If the assertions fail, they reject with an `HttpError` (tipically a `BadRequestError` but it could also be an `UnauthorizedError` or a `ForbiddenError`, depending on the intent of each _middleware_). They rely on _functions_ like the ones from [`parmenides`](https://github.com/dggluz/parmenides) to also _type_ the `req` _properties_ (that are _typed_ as `any` by default).
 
 ### Database
 
