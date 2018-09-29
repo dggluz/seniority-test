@@ -71,4 +71,14 @@ All the _view_'s are `Component`'s, but not all the `Component`'s are _views_, s
 
 ### Observable
 
+_Models_ communicate their changes through _events_, implementing the [_observable pattern_](https://en.wikipedia.org/wiki/Observer_pattern) through the [`Observable`](https://github.com/dggluz/seniority-test/blob/master/client/src/utils/observable.mixin.ts) [_mixin_](#mixins). The decision of developing it as a _mixin_ is based on the fact that it is a very general feature, with high coupling to the _class_ and it allows _subclassing_ a _Parent class_.
+
+This version of _observables_ associate a _type_ to each _event_. For instance, if a [_model_ `Item`](https://github.com/dggluz/seniority-test/blob/master/client/src/model/item.ts) changes its _description_, [it _notifies_ its _observers_](https://github.com/dggluz/seniority-test/blob/master/client/src/model/item.ts#L73) whith a `description` _event_ and an associated `string` _value_. Those _typings_ are specified when _extending_ the [`Observable` _mixin_](https://github.com/dggluz/seniority-test/blob/master/client/src/model/item.ts#L36) and are then validated by TypeScript's type checker.
+
+This module is the only one that have [_tests_](#testing).
+
+### Mixins
+
+[_Mixins_](https://en.wikipedia.org/wiki/Mixin) where implemented as recommended by [this doc](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-2.html). As [TypeScript can not _subclass_ from a _type parameter_](https://github.com/Microsoft/TypeScript/issues/4890#issuecomment-141879451) it was impossible to use a _default superclass_, so telling **explicitly** which _superclass_ to extend from _extending_ is necessary. That is why an [`EmptySuperClass`](https://github.com/dggluz/seniority-test/blob/master/client/src/utils/empty-super-class.ts) was added.
+
 ### Persistence
