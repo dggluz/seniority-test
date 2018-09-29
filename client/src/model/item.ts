@@ -7,6 +7,8 @@ import { tap } from '../utils/tap';
 import { ImageWrapper } from './image-wrapper/image-wrapper';
 import { ImageWrapperFile } from './image-wrapper/image-wrapper-file';
 import { ImageWrapperUrl } from './image-wrapper/image-wrapper-url';
+import { validateImageSize } from '../utils/validate-image-size';
+import { tapChain } from '../utils/tap-chain';
 
 export class ItemDescriptionError extends Error {
 	ItemDescriptionError = 'ItemDescriptionError';
@@ -27,6 +29,9 @@ export class NoItemImageError extends Error {
 export class ItemWithoutIdError extends Error {
 	ItemWithoutIdError = 'ItemWithoutIdError';
 }
+
+const EXPECTED_IMAGE_HEIGHT = 320;
+const EXPECTED_IMAGE_WIDTH = 320;
 
 export class Item extends Observable<{
 	description: string;
@@ -84,17 +89,22 @@ export class Item extends Observable<{
 				
 				if (typeof image === 'string') {
 					this._image = new ImageWrapperUrl(image);
+					return this.getImageAsUrl();
 				}
-				else {
-					this._image = new ImageWrapperFile(image);
-				}
-				return Task.resolve(this)
+
+				const imageWrapperFile = new ImageWrapperFile(image);
+
+				return imageWrapperFile
+					.getAsUrl()
+					// Validate image size
+					.chain(tapChain(validateImageSize({
+						height: EXPECTED_IMAGE_HEIGHT,
+						width: EXPECTED_IMAGE_WIDTH
+					})))
+					// Once, validated set the image
+					.map(tap(_ => this._image = imageWrapperFile))
 			})
-			.chain(_ =>
-				this
-					.getImageAsUrl()
-					.map(imageUrl => this._notifyObservers('image', imageUrl))
-			)
+			.map(tap(imageUrl => this._notifyObservers('image', imageUrl)))
 			.map(_ => this)
 		;
 	}
