@@ -12,7 +12,7 @@ import { getItemWithImageUrl } from '../utils/get-item-with-image-url';
  */
 export const getItemsCtrl = createEndpoint(_ =>
 	getAllItems()
-		// TODO: change this when Task.all is fixed for empty arrays
+		// change this when Task.all is fixed for empty arrays
 		.chain(items => items.length ? Task.all(items.map(getItemWithImageUrl)) : Task.resolve([]))
 		.catch(caseError(isMongoError, err => asUnknownError(err)))
 		.catch(caseError(
