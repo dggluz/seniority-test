@@ -82,3 +82,7 @@ This module is the only one that have [_tests_](#testing).
 [_Mixins_](https://en.wikipedia.org/wiki/Mixin) where implemented as recommended by [this doc](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-2.html). As [TypeScript can not _subclass_ from a _type parameter_](https://github.com/Microsoft/TypeScript/issues/4890#issuecomment-141879451) it was impossible to use a _default superclass_, so telling **explicitly** which _superclass_ to extend from _extending_ is necessary. That is why an [`EmptySuperClass`](https://github.com/dggluz/seniority-test/blob/master/client/src/utils/empty-super-class.ts) was added.
 
 ### Persistence
+
+The [_persistence_](https://github.com/dggluz/seniority-test/tree/master/client/src/persistence), as the _views_, talk to the _models_ and is _subscribed_ to _model events_, so the _model_ should not worry about _persistence_ at all.
+
+[The decision](../server) of making the _server_ a _REST server_, has lead [to update an _item_'s order only changing it's own order (not others)](https://github.com/dggluz/seniority-test/blob/master/client/src/model/items-store.ts#L73).
