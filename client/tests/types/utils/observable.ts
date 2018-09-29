@@ -8,6 +8,8 @@ class Foo extends Observable<{
 }>().from(EmptySuperClass) {
 	foo(value: string) {
 		this._notifyObservers('foo', `foo: ${value}`);
+		// We can notify observers with an unexpected type:
+		this._notifyObservers('baz', `baz: ${value}`); // $ExpectError
 		return value;
 	}
 }
@@ -16,6 +18,8 @@ class Foo extends Observable<{
 const foo = new Foo();
 // ...we can call class methods
 foo.foo('hello!'); // $ExpectType string
+// ...but only with expected types
+foo.foo(8); // $ExpectError
 
 // ...we can subscribe to events (which are typed themselves)
 foo.subscribe('foo', x => {
@@ -41,6 +45,8 @@ class Foo2 extends Observable<{
 }>().from(Bar) {
 	foo(value: string) {
 		this._notifyObservers('foo', `foo: ${value}`);
+		// We can notify observers with an unexpected type:
+		this._notifyObservers('bar', 4); // $ExpectError
 		return value;
 	}
 }
@@ -49,3 +55,5 @@ class Foo2 extends Observable<{
 const foo2 = new Foo2();
 // ... we can call superclass methods
 foo2.bar(4); // $ExpectType number
+// ...but only with expected types
+foo2.bar('4'); // $ExpectError
