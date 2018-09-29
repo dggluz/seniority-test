@@ -1,9 +1,9 @@
 import { Component } from '../component';
 import { Item } from '../../model/item';
 import { TextboxComponent } from '../textbox/textbox.component';
-import { noop } from '../../utils/noop';
 import { as } from '../../utils/as';
 import { validateOrReportSingleImageFile } from '../../utils/validate-or-report-single-image-file';
+import { tryOrShowError } from '../../utils/try-or-show-error';
 
 require('./item.component.less');
 
@@ -50,12 +50,9 @@ export class ItemComponent extends Component {
 
 		this.$dom.find('.description-textbox-wrapper').submit(e => {
 			e.preventDefault();
-			this._model
-				.setDescription(this._descriptionTextbox.getValue())
-				// TODO: improve this
-				// TODO: exit description edition mode on succes??
-				.fork(console.error, noop)
-			;
+			tryOrShowError(() =>
+				this._model.setDescription(this._descriptionTextbox.getValue())
+			);
 			this._exitDescriptionEditionMode();
 		});
 
@@ -69,11 +66,7 @@ export class ItemComponent extends Component {
 			const files = as(HTMLInputElement)(this.$dom.find('.image-selector')).files;
 			const image = files && validateOrReportSingleImageFile(files);
 			if (image) {
-				this._model.setImage(image)
-					// TODO: improve this
-					// TODO: exit description edition mode on succes??
-					.fork(console.error, noop)
-				;
+				tryOrShowError(() => this._model.setImage(image));
 			}
 		});
 
@@ -92,15 +85,11 @@ export class ItemComponent extends Component {
 	}
 
 	private _updateImage() {
-		this
-			.getModel()
-			.getImageAsUrl()
-			.fork(
-				// TODO: handle error
-				console.error,
-				image =>
-					this.$dom.find('.thumbnail').attr('src', image)
-			);
+		tryOrShowError(() =>
+			this
+				.getModel()
+				.getImageAsUrl()
+		);
 		return this;
 	}
 

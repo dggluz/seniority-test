@@ -4,6 +4,7 @@ import { Item } from '../../model/item';
 import { readFileAsDataUrl } from '../../utils/read-file-as-data-url';
 import { NewItemFormFirstStepComponent } from './first-step/new-item-form-first-step.component';
 import { NewItemFormSecondStepComponent } from './second-step/new-items-form-second-step.component';
+import { tryOrShowError } from '../../utils/try-or-show-error';
 
 require('./new-item-form.component.less');
 
@@ -26,27 +27,26 @@ export class NewItemFormComponent extends Component {
 	}
 
 	completeFirstStep (imageFile: File) {
-		// TODO: validate dimensions
-		readFileAsDataUrl(imageFile)
-			.fork(_ => {
-				// TODO: handle error.
-			}, image => {
+		tryOrShowError(
+			() => readFileAsDataUrl(imageFile),
+			image => {
 				this._showSecondStep(image);
-			})
-		;
+			}
+		);
 		return this;
 	}
 
 	completeSecondStep (description: string) {
-		Item.create(
-			description,
-			this._firstStep.getImageFile()
-		).fork(_err => {
-			// TODO: handle errors
-		}, item => {
-			itemsStore.addItem(item);
-			this.restart();
-		});
+		tryOrShowError(() =>
+			Item.create(
+				description,
+				this._firstStep.getImageFile()
+			),
+			item => {
+				itemsStore.addItem(item);
+				this.restart();
+			}
+		);
 	}
 
 	restart () {
