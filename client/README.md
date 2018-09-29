@@ -65,6 +65,10 @@ I have also avoided any _double binding_ solution. The _views_ send message dire
 
 ### Components
 
+A _component_ is an _object_ that interacts with the [_DOM_](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction). A made [`Component`](https://github.com/dggluz/seniority-test/blob/master/client/src/components/component.ts) _superclass_ to manage the _components_'s setup. The _components_ **must** include their _html_ code and _can_ include it's styles (_less_ code).
+
+All the _view_'s are `Component`'s, but not all the `Component`'s are _views_, since not all of them have a corresponding _model_.
+
 ### Observable
 
 ### Persistence
