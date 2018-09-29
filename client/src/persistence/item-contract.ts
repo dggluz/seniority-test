@@ -7,6 +7,9 @@ export interface ItemData {
 	order: number;
 }
 
+/**
+ * Validates an object has the form of an "Item" (useful to validate server's response)
+ */
 export const itemContract = strictObjOf<ItemData>({
 	_id: str,
 	description: str,

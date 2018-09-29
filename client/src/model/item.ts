@@ -33,6 +33,10 @@ export class ItemWithoutIdError extends Error {
 const EXPECTED_IMAGE_HEIGHT = 320;
 const EXPECTED_IMAGE_WIDTH = 320;
 
+/**
+ * @class
+ * Item model
+ */
 export class Item extends Observable<{
 	description: string;
 	order: number;
@@ -79,6 +83,10 @@ export class Item extends Observable<{
 		return this._description;
 	}
 
+	/**
+	 * Sets the image, delegating the image read on an Strategy depending on image's type
+	 * @param image 
+	 */
 	setImage (image: string | File | null) {
 		return Task
 			.resolve(this)

@@ -10,6 +10,11 @@ export class FileReadError extends Error {
 	}
 }
 
+/**
+ * Takes a file and returns a Task to its content, as DataUrl
+ * (useful for tranforming image files to base64)
+ * @param file 
+ */
 export const readFileAsDataUrl = (file: File) =>
 	new Task<string, FileReadError>((resolve, reject) => {
 		var reader = new FileReader();

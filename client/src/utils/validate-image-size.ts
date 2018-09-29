@@ -7,6 +7,11 @@ export class InvalidImageDimensionsError extends Error {
 	}
 }
 
+/**
+ * Takes the expected dimensions of the image and returns function that takes a base64 image
+ * and return a Task that's rejected if the dimensions doesn't match.
+ * @param expectedDimensions
+ */
 export const validateImageSize = (expectedDimensions: { height: number; width: number; }) =>
 	(imageUrl: string) =>
 		getImageSize(imageUrl)
@@ -18,6 +23,10 @@ export const validateImageSize = (expectedDimensions: { height: number; width: n
 			))
 ;
 
+/**
+ * Takes a base64 image and returns a Task to its size.
+ * @param imageUrl
+ */
 const getImageSize = (imageUrl: string) =>
 	new Task<{ height: number; width: number; }, ErrorEvent>((resolve, reject) => {
 		const img = new Image();

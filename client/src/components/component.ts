@@ -1,3 +1,9 @@
+
+/**
+ * @abstract @class
+ * Component superclass. Performs the basic setup of a component (reads HTML, appends to DOM, sets event handlers).
+ * It's intended to be subclassed, not to be instanced itself.
+ */
 export class Component {
 	protected $dom: JQuery<HTMLElement>;
 

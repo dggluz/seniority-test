@@ -8,6 +8,10 @@ export class UnexpectedServerResponseError extends Error {
 	}
 }
 
+/**
+ * Validates the server's response structure.
+ * @param validation
+ */
 export const validateServerResponse = <A, B> (validation: (x: A) => B) =>
 	taskValidation(validation, err => new UnexpectedServerResponseError(err))
 ;

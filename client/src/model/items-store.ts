@@ -6,6 +6,10 @@ import { Task } from '@ts-task/task';
 import { ItemData } from '../persistence/item-contract';
 import { tap } from '../utils/tap';
 
+/**
+ * @class
+ * Model item's store (a set of items).
+ */
 export class ItemsStore extends Observable<{
 	'init': Item[];
 	'new-item': Item;

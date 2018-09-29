@@ -2,6 +2,10 @@ import { ClassType } from './class-type';
 
 export type FileCallback = (file: File) => void;
 
+/**
+ * Mixin that provides basic FileSelector functionality
+ * @param Base 
+ */
 export const FileSelector = <T extends ClassType<any>> (Base: T) =>
 	class extends Base {
 		protected _fileCallbacks: FileCallback[] = [];
