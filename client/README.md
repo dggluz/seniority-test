@@ -28,7 +28,7 @@ Adding to the [general type safety and error handling considerations](https://gi
 
 #### Other type safety functions
 
-There were a couple of situations where the preceding tools were not enough to guarantee type safety, so I developed a couple of _functions_:
+There were a couple of situations where the mentioned tools were not enough to guarantee type safety, so I developed a couple of _functions_:
 
 * [`as`](https://github.com/dggluz/seniority-test/blob/master/client/src/utils/as.ts): [`JQuery`](https://jquery.com/)'s [_typings_](https://www.npmjs.com/package/@types/jquery) won't tell you that an `Event` is actually a [`DragEvent`](https://developer.mozilla.org/en-US/docs/Web/API/DragEvent), even if you know it _should_ be. In that case I use `as` to _assert_ that it is. I couldn't have used only [`instanceOf`](https://github.com/dggluz/parmenides#instanceof) `Parmenide`'s _function_, since it expects it's parameter to be an _instance_ of the supplied _Constructor_, and an instance of `Event` is not assignable to `DragEvent`.
 
