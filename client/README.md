@@ -37,7 +37,7 @@ Also, as `Task`s are _lazy_ they need to be `.fork()`ed to do their job.
 
 #### Task/utils
 
-[`Task/utils`](https://github.com/ts-task/utils) are utility _functions_ to work with `Task`s. The more useful and used are `caseError` (https://github.com/ts-task/utils#caseerror) and `isInstanceOf` (https://github.com/ts-task/utils#isinstanceof).
+[`Task/utils`](https://github.com/ts-task/utils) are utility _functions_ to work with `Task`s. The more useful and used are [`caseError`](https://github.com/ts-task/utils#caseerror) and [`isInstanceOf`](https://github.com/ts-task/utils#isinstanceof).
 
 There are also a couple of _functions_ that are not in [`Task/utils`](https://github.com/ts-task/utils) yet, but they could be. I added them to this project instead. They are:
 
