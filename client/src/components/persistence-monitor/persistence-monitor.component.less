@@ -1,0 +1,31 @@
+x-persistence-monitor {
+	font-size: 0.9em;
+	position: absolute;
+	right: 1em;
+	top: 0px;
+	opacity: 0.8;
+
+	.status {
+		display: none;
+	}
+
+	&.show-loading {
+		.loading-wrapper {
+			display: inline-block!important;
+		}
+	}
+
+	&.show-error {
+		cursor: pointer;
+
+		.error-wrapper {
+			display: inline-block!important;
+		}
+	}
+
+	&.show-success {
+		.success-wrapper {
+			display: inline-block!important;
+		}
+	}
+}

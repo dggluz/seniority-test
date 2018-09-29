@@ -5,7 +5,7 @@ import { validateServerResponse } from './validate-server-response';
 import { tap } from '../utils/tap';
 import { itemContract } from './item-contract';
 
-export const saveNewItem = (item: Item) => {
+export const saveNewItem = (item: Item) =>
 	item
 		.getImageAsFile()
 		.chain(imageFile => {
@@ -27,12 +27,4 @@ export const saveNewItem = (item: Item) => {
 		.map(tap(itemData =>
 			item.setId(itemData._id)
 		))
-		// TODO: extract into function to reuse between all requests savings
-		.fork(
-			// TODO: handle better errors
-			console.error,
-			// TODO: handle better success
-			console.log
-		)
-	;
-};
+;

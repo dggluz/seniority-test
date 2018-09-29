@@ -7,35 +7,19 @@ import { Item } from '../model/item';
 import { saveItemDescription } from './save-item-description';
 import { saveItemImage } from './save-item-image';
 import { saveItemOrder } from './save-item-order';
+import { persistenceMonitor } from './persistence-monitor.instance';
+import { tryToSave } from './try-to-save';
 
 const subscribeToItemEvents = (item: Item) => {
 	item
-	.subscribe('description', _ => {
-		saveItemDescription(item)
-			.fork(
-				// TODO: improve error handling
-				console.error,
-				noop
-			)
-		;
-	})
-	.subscribe('order', _ => {
-		saveItemOrder(item)
-			.fork(
-				// TODO: improve error handling
-				console.error,
-				noop
-			)
-		;
-	})
-	.subscribe('image', _ => {
-			saveItemImage(item)
-				.fork(
-					// TODO: improve error handling
-					console.error,
-					noop
-				)
-			;
+		.subscribe('description', _ => {
+			tryToSave(() => saveItemDescription(item));
+		})
+		.subscribe('order', _ => {
+			tryToSave(() => saveItemOrder(item));
+		})
+		.subscribe('image', _ => {
+			tryToSave(() => saveItemImage(item));
 		})
 	;
 };
@@ -51,14 +35,18 @@ export const initPersistence = () => {
 				.init(itemsData)
 				.subscribe('new-item', newItem => {
 					subscribeToItemEvents(newItem);
-					saveNewItem(newItem);
+					tryToSave(() => saveNewItem(newItem));
 				})
-				.subscribe('remove-item', deleteItem)
+				.subscribe('remove-item', item =>
+					tryToSave(() => deleteItem(item))
+				)
 			;
 		})
 		.fork(
-			// TODO: improve error handling
-			console.error,
+			err => {
+				persistenceMonitor.showError();
+				console.error(err);
+			},
 			noop
 		)
 	;

@@ -11,11 +11,4 @@ export const deleteItem = (item: Item) =>
 				method: 'DELETE'
 			})
 		)
-		// TODO: extract into function to reuse between all requests savings
-		.fork(
-			// TODO: handle better errors
-			console.error,
-			// TODO: handle better success
-			console.log
-		)
 ;
