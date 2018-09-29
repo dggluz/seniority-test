@@ -59,6 +59,12 @@ There were a couple of situations where the preceding tools were not enough to g
 
 ### MVC
 
+I opted for a kind of `MVC` architecture for the client. I think it helps reasoning and separation of concerns when it is well done (and I consider there was a lot of confusion regarding those acronym). In that sense, I think of the _model_ not as _plain data-objects_ but as _objects_ with _bussiness rules_ and _behaviour_ which knows nothing about the _views_. In the same way, I think of _views_ not only as _templates_ but as objects that interact with the _DOM_ ([`Components`](#components)).
+
+I have also avoided any _double binding_ solution. The _views_ send message directly to the _models_ but the _models_ _notify_ their changes through [_events_](#observable) as they should know nothing about _views_ or _persistence_.
+
 ### Components
 
 ### Observable
+
+### Persistence
