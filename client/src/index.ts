@@ -1,36 +1,11 @@
-import { NewItemFormComponent } from './components/new-item-form/new-item-form.component';
-import { ItemsWrapperComponent } from './components/items-wrapper/items-wrapper.component';
-import { ItemsTitleComponent } from './components/items-title/items-title.component';
 import { initPersistence } from './persistence/persistence';
+import { MainPageComponent } from './components/main-page/main.page.component';
 import { itemsStore } from './model/model';
 
-new NewItemFormComponent()
-	.appendTo('.new-item-form-wrapper')
-;
-
-new ItemsTitleComponent()
-	.appendTo('.items-title-wrapper')
-;
-
-new ItemsWrapperComponent()
-	.appendTo('.items-wrapper')
-;
+const mainPage = new MainPageComponent();
 
 initPersistence();
 
-///////////////////
-
-const checkIfThereAreItems = (itemsQty: number) => {
-	if (itemsQty) {
-		$('.without-items').hide();
-		$('.with-items').show();
-	}
-	else {
-		$('.without-items').show();
-		$('.with-items').hide();
-	}
-};
-
-itemsStore
-	.subscribe('items-qty', checkIfThereAreItems);
-;
+itemsStore.subscribe('init', () => {
+	mainPage.appendTo($('#app').empty());
+});
