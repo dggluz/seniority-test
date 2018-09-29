@@ -5,13 +5,25 @@ import { validateOrReportSingleImageFile } from '../../utils/validate-or-report-
 
 require('./file-button.component.less');
 
-export class FileButtonComponent extends FileSelector(Component) {
-	constructor () {
-		super(require('./file-button.component.html'));
-	}
+export interface FileButtonComponentOptions {
+	text?: string;
+}
 
+export class FileButtonComponent extends FileSelector(Component) {
+	constructor (options: FileButtonComponentOptions) {
+		super(require('./file-button.component.html'));
+
+		this
+			.setText(options.text || 'Select file');
+	}
+	
 	restart () {
 		this._getInputFile().val('');
+		return this;
+	}
+	
+	setText (text: string) {
+		this.$dom.find('.text').text(text);
 		return this;
 	}
 

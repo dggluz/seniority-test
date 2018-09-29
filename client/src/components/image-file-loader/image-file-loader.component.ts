@@ -10,13 +10,18 @@ export class ImageFileLoaderComponent extends FileSelector(Component) {
 	constructor () {
 		super(require('./image-file-loader.component.html'));
 
-		this._fileButton = new FileButtonComponent()
-			.onNewFile(_file => this._triggerFileCallbacks())
-			.appendTo(this.$dom.find('.file-button-wrapper'))
-		;
-		this._fileDropArea = new FileDropAreaComponent()
+		this._fileDropArea = new FileDropAreaComponent({
+			text: 'Drop the item\'s image here...'
+		})
 			.onNewFile(_file => this._triggerFileCallbacks())
 			.appendTo(this.$dom.find('.file-drop-area-wrapper'))
+		;
+
+		this._fileButton = new FileButtonComponent({
+			text: '...or select it from your filesystem'
+		})
+			.onNewFile(_file => this._triggerFileCallbacks())
+			.appendTo(this.$dom.find('.file-button-wrapper'))
 		;
 	}
 

@@ -24,9 +24,20 @@ const hasSingleImageFile = (files: FileRepresentation[]) =>
 
 const asDragEvent = as(DragEvent);
 
+export interface FileDropAreaComponentOptions {
+	text?: string;
+}
+
 export class FileDropAreaComponent extends FileSelector(Component) {
-	constructor () {
+	constructor (options: FileDropAreaComponentOptions) {
 		super(require('./file-drop-area.component.html'));
+
+		this.setText(options.text || 'Drop your file here');
+	}
+
+	setText (text: string) {
+		this.$dom.find('.text').text(text);
+		return this;
 	}
 
 	restart () {
