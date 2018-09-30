@@ -12,6 +12,10 @@ export class TypeLikeError extends TypeError {
 	TypeLikeError = 'TypeLikeError';
 }
 
+/**
+ * Util function to decide if an error is a TypeLikeError
+ * @param err
+ */
 export const isTypeLikeError = (err: any): err is TypeLikeError =>
 	err.TypeLikeError === 'TypeLikeError'
 ;
@@ -50,6 +54,11 @@ export const objectOfLike = <T> (checkersMap: MapOfValidators<T>) => {
 	};
 };
 
+/**
+ * Takes a "mongo ObjectId-like" value and returns it as mongo ObjectId, if possible.
+ * If not, throws a TypeLike exception.
+ * @param value
+ */
 export const mongoIdLike = (mongoId: string | ObjectId) => {
 	if (isInstanceOf(ObjectID)(mongoId) || typeof mongoId === 'string' && /^[a-f0-9]{24}$/i.test(mongoId)) {
 		return new ObjectId(mongoId);
@@ -61,6 +70,10 @@ export const mongoIdLike = (mongoId: string | ObjectId) => {
 	);
 };
 
+/**
+ * Takes a "number-like" value and returns it as number, if possible. If not, throws a TypeLike exception.
+ * @param value
+ */
 export const numberLike = (value: number | string) => {
 	if (isNaN(value as any)) {
 		throw new TypeLikeError(`"${value} can not be converted to number"`);

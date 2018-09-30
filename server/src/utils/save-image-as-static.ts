@@ -13,6 +13,10 @@ export class FileExtensionError extends Error {
 	}
 }
 
+/**
+ * Takes an image file and moves it to the configured path (in "configs").
+ * @param imageFile
+ */
 export const saveImageAsStatic = (imageFile: FileData) =>
 	Task.all([
 		Task

@@ -11,6 +11,10 @@ export class InvalidImageDimensions extends Error {
 	}
 }
 
+/**
+ * Validates the image has the expected dimensions. Returns a Task that is rejected if the valiation fails.
+ * @param imagePath
+ */
 export const validateImageSize = (imagePath: string) => {
 	const expectedHeight = 320;
 	const expectedWidth = 320;

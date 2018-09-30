@@ -17,6 +17,11 @@ export type FileData = {
 	name: string;
 };
 
+/**
+ * This middleware takse a list of file "keys" and check if the `req.files` property has a file for each key,
+ * typing that property.
+ * @param expectedFiles file "keys"
+ */
 export const checkFiles = <R extends {
 	files?: {
 		[name: string]: RequestFileInterface;

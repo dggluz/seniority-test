@@ -9,6 +9,10 @@ export class ImageSizeError extends Error {
 	}
 }
 
+/**
+ * Gets an image's size. Returns them as a Task.
+ * @param imagePath
+ */
 export const getImageSize = (imagePath: string) =>
 	new Task<{
 		height: number;

@@ -15,8 +15,12 @@ import { noop } from '../utils/noop';
  */
 export const createEndpoint = <T> (controller: (req: Request) => Task<T, HttpError | UnknownError>) =>
 	(req: Request, res: Response) =>
+		// Calls the controller
 		controller(req)
+			// Sends the response to the client
 			.map(tap(result => res.send(200, result)))
+
+			// If the Task was rejected with an HttpError, sends it to the client
 			.catch(
 				caseError(
 					isInstanceOf(HttpError),
@@ -27,6 +31,8 @@ export const createEndpoint = <T> (controller: (req: Request) => Task<T, HttpErr
 						return Task.resolve(void 0);
 					})
 			)
+
+			// If there was an Unknown error, sends an InternalServerError to the client
 			.catch(err => {
 				const internalServerError = new InternalServerError();
 				res.send(internalServerError.errorCode, {
@@ -34,5 +40,7 @@ export const createEndpoint = <T> (controller: (req: Request) => Task<T, HttpErr
 				});
 				return Task.reject(err);
 			})
+
+			// Logs the error, if rejected (and forks the Task to execute it).
 			.fork(logUnhandledError, noop)
 ;

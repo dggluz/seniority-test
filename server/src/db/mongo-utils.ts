@@ -12,6 +12,10 @@ export class MongoError extends Error {
 	}
 }
 
+/**
+ * Tries to connect to a Mongo DB and returns a Task.
+ * @param url
+ */
 export const createMongoConnection = (url: string) =>
 	new Task<MongoClient, MongoError>((resolve, reject) => {
 		MongoClient.connect(
@@ -24,9 +28,6 @@ export const createMongoConnection = (url: string) =>
 				else {
 					resolve(client);
 				}
-				// const db = client.db(dbName);
-				
-				// client.close();
 			}
 		);
 	})
@@ -40,6 +41,10 @@ export interface MongoDocument {
 
 export type UninsertedDocument <T> = Omit<T, '_id'>;
 
+/**
+ * Curried function that inserts a document into a collection, returning a Task with the result.
+ * @param document
+ */
 const mongoInsertOne = <T extends MongoDocument>  (document: UninsertedDocument<T>) =>
 	(collection: Collection<T>) =>
 		new Task<T, MongoError | MongoInsertError>((resolve, reject) => {
@@ -60,6 +65,11 @@ const mongoInsertOne = <T extends MongoDocument>  (document: UninsertedDocument<
 		})
 ;
 
+/**
+ * Curried function that searches for documents in a collection, based on a
+ * criteria and returning a Task with the result.
+ * @param criteria
+ */
 const mongoFind = <T extends MongoDocument> (criteria: FilterQuery<T>) =>
 	(collection: Collection<T>) =>
 		new Task<T[], MongoError>((resolve, reject) => {
@@ -76,6 +86,11 @@ const mongoFind = <T extends MongoDocument> (criteria: FilterQuery<T>) =>
 		})
 ;
 
+/**
+ * Curried function that tries to delete a document from a collection, based on a criteria
+ * and returning a Task with the result.
+ * @param criteria
+ */
 const mongoDelete = <T extends MongoDocument> (criteria: FilterQuery<T>) =>
 	(collection: Collection<T>) =>
 		new Task<void, MongoError>((resolve, reject) => {
@@ -91,6 +106,11 @@ const mongoDelete = <T extends MongoDocument> (criteria: FilterQuery<T>) =>
 		})
 ;
 
+/**
+ * Curried function that searches for one document in a collection, based on a
+ * criteria and returning a Task with the result.
+ * @param criteria
+ */
 const mongoFindOne = <T extends MongoDocument> (criteria: FilterQuery<T>) =>
 	(collection: Collection<T>) =>
 		new Task<T, MongoError | MongoDocumentDoesNotExistError<T>>((resolve, reject) => {
@@ -115,6 +135,12 @@ interface MongoUpdate <T> {
 	$set?: Partial<T>;
 }
 
+/**
+ * Curried function that updates a document in a collection, based on a criteria and returning
+ * a Task to the result.
+ * @param criteria
+ * @param update
+ */
 const mongoUpdateOne = <T extends MongoDocument> (criteria: FilterQuery<T>, update: MongoUpdate<T>) =>
 	(collection: Collection<T>) =>
 		new Task<UpdateWriteOpResult, MongoError>((resolve, reject) => {
@@ -129,6 +155,10 @@ const mongoUpdateOne = <T extends MongoDocument> (criteria: FilterQuery<T>, upda
 		})
 ;
 
+/**
+ * DB connection. Is a Task that is "shared" to avoid reconnecting with each query.
+ * It takes the connection data from the "secrets".
+ */
 const dbCnx = dbSecrets
 	.chain(({db}) =>
 		createMongoConnection(`mongodb://${db.host}:${db.port}`)
@@ -189,4 +219,7 @@ export const updateOneDocument = <T extends MongoDocument> (collectionName: stri
 			.chain(mongoUpdateOne(criteria, update))
 ;
 
+/**
+ * Util function to decide if an error is a MongoError
+ */
 export const isMongoError = isInstanceOf(MongoError, MongoInsertError);
