@@ -50,7 +50,7 @@ All the _view_'s are `Component`'s, but not all the `Component`'s are _views_, s
 
 _Models_ communicate their changes through _events_, implementing the [_observable pattern_](https://en.wikipedia.org/wiki/Observer_pattern) through the [`Observable`](https://github.com/dggluz/seniority-test/blob/master/client/src/utils/observable.mixin.ts) [_mixin_](#mixins). The decision of developing it as a _mixin_ is based on the fact that it is a very general feature, with high coupling to the _class_ and it allows _subclassing_ a _Parent class_.
 
-This version of _observables_ associate a _type_ to each _event_. For instance, if a [_model_ `Item`](https://github.com/dggluz/seniority-test/blob/master/client/src/model/item.ts) changes its _description_, [it _notifies_ its _observers_](https://github.com/dggluz/seniority-test/blob/master/client/src/model/item.ts#L73) whith a `description` _event_ and an associated `string` _value_. Those _typings_ are specified when _extending_ the [`Observable` _mixin_](https://github.com/dggluz/seniority-test/blob/master/client/src/model/item.ts#L36) and are then validated by TypeScript's type checker.
+This version of _observables_ associate a _type_ to each _event_. For instance, if a [_model_ `Item`](https://github.com/dggluz/seniority-test/blob/master/client/src/model/item.ts) changes its _description_, [it _notifies_ its _observers_](https://github.com/dggluz/seniority-test/blob/master/client/src/model/item.ts#L77) whith a `description` _event_ and an associated `string` _value_. Those _typings_ are specified when _extending_ the [`Observable` _mixin_](https://github.com/dggluz/seniority-test/blob/master/client/src/model/item.ts#L40) and are then validated by TypeScript's type checker.
 
 This module is the only one that have [_tests_](#testing).
 
@@ -62,4 +62,4 @@ This module is the only one that have [_tests_](#testing).
 
 The [_persistence_](https://github.com/dggluz/seniority-test/tree/master/client/src/persistence), as the _views_, talk to the _models_ and is _subscribed_ to _model events_, so the _model_ should not worry about _persistence_ at all.
 
-[The decision](../server) of making the _server_ a _REST server_, has lead [to update an _item_'s order only changing it's own order (not others)](https://github.com/dggluz/seniority-test/blob/master/client/src/model/items-store.ts#L73).
+[The decision](../server) of making the _server_ a _REST server_, has lead [to update an _item_'s order only changing it's own order (not others)](https://github.com/dggluz/seniority-test/blob/master/client/src/model/items-store.ts#L77).
